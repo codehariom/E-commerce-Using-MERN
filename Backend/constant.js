@@ -1,1 +1,1 @@
-export const db_name="Fashionday"
+export const db_name="StylePop"
