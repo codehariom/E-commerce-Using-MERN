@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
@@ -6,6 +6,12 @@ import SerachBar from "../common/SerachBar";
 import CartDrawer from "../layout/CartDrawer";
 
 function Navbar() {
+const [cartDrawer, setCartDrawer] = useState(false);
+
+  const toggleCartDrawer = () => {
+    setCartDrawer(!cartDrawer);
+  };
+
   return (
     <>
       <nav className=" container mx-auto flex items-center justify-between py-4 px-6">
@@ -47,7 +53,7 @@ function Navbar() {
           <Link to="/profile" className="text-gray-700 hover:text-black ">
             <FaUser size={20} />
           </Link>
-          <button className=" relative hover:text-black">
+          <button onClick={toggleCartDrawer} className=" relative hover:text-black">
             <FaCartShopping size={22} />
             <span className=" bg-red-600 absolute -top-2 -right-4.5 text-white text-sm rounded-full px-1.5">
               4
@@ -59,7 +65,7 @@ function Navbar() {
           </div>
         </div>
       </nav>
-      <CartDrawer/>
+      <CartDrawer cartDrawer={cartDrawer} toggleCartDrawer={toggleCartDrawer}/>
     </>
   );
 }
