@@ -48,24 +48,6 @@ function CartContent() {
       price: 250,
       image: "https://picsum.photos/200?random=1",
     },
-    {
-      productId: 6,
-      name: "T-shirt",
-      size: "L",
-      color: "Red",
-      quantity: 1,
-      price: 250,
-      image: "https://picsum.photos/200?random=1",
-    },
-    {
-      productId: 7,
-      name: "shirt",
-      size: "M",
-      color: "Red",
-      quantity: 1,
-      price: 250,
-      image: "https://picsum.photos/200?random=1",
-    },
   ];
 
   return (
