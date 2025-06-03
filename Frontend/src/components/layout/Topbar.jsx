@@ -19,7 +19,7 @@ function Topbar() {
           </a>
         </div>
         <div className=" flex-grow text-sm text-center">
-            <span> We ship All over the india </span>
+            <span> We are Shiping All over the India </span>
         </div>
         <div className="text-sm hidden md:block">
             <a href="tel:+9173010302696" className=" hover:text-gray-300"> +91 7310302696 </a>
