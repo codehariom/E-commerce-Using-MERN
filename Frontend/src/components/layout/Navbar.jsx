@@ -2,11 +2,18 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
+import { HiMiniBars3BottomRight } from "react-icons/hi2";
 import SerachBar from "../common/SerachBar";
 import CartDrawer from "../layout/CartDrawer";
+import { IoMdClose } from "react-icons/io";
 
 function Navbar() {
-const [cartDrawer, setCartDrawer] = useState(false);
+  const [cartDrawer, setCartDrawer] = useState(false);
+  const [navDrawer, setNavDrawer] = useState(false);
+
+  const toggelNavDrawer = () => {
+    setNavDrawer(!navDrawer);
+  };
 
   const toggleCartDrawer = () => {
     setCartDrawer(!cartDrawer);
@@ -53,7 +60,10 @@ const [cartDrawer, setCartDrawer] = useState(false);
           <Link to="/profile" className="text-gray-700 hover:text-black ">
             <FaUser size={20} />
           </Link>
-          <button onClick={toggleCartDrawer} className=" relative hover:text-black">
+          <button
+            onClick={toggleCartDrawer}
+            className=" relative hover:text-black"
+          >
             <FaCartShopping size={22} />
             <span className=" bg-red-600 absolute -top-2 -right-4.5 text-white text-sm rounded-full px-1.5">
               4
@@ -63,9 +73,29 @@ const [cartDrawer, setCartDrawer] = useState(false);
           <div className=" overflow-hidden">
             <SerachBar />
           </div>
+          <button className="md:hidden" onClick={ toggelNavDrawer }>
+            <HiMiniBars3BottomRight size={25} />
+          </button>
         </div>
       </nav>
-      <CartDrawer cartDrawer={cartDrawer} toggleCartDrawer={toggleCartDrawer}/>
+      <CartDrawer cartDrawer={cartDrawer} toggleCartDrawer={toggleCartDrawer} />
+
+      {/* Mobile nav  */}
+
+      <div
+        className={` fixed top-23 left-0 w-3/4 sm:w-1/2 md:w-1/3 h-full bg-white shadow-lg transform  transition-transform duration-300 z-50 ${
+          navDrawer ? "translate-x-0 " : "-translate-x-full"
+        }`}
+      >
+        <div className=" flex justify-end p-4 ">
+          <button onClick={toggelNavDrawer}>
+            <IoMdClose size={25} />
+          </button>
+        </div>
+        <div>
+
+        </div>
+      </div>
     </>
   );
 }
