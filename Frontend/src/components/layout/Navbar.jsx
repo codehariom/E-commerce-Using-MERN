@@ -73,7 +73,7 @@ function Navbar() {
           <div className=" overflow-hidden">
             <SerachBar />
           </div>
-          <button className="md:hidden" onClick={ toggelNavDrawer }>
+          <button className="md:hidden" onClick={toggelNavDrawer}>
             <HiMiniBars3BottomRight size={25} />
           </button>
         </div>
@@ -92,8 +92,38 @@ function Navbar() {
             <IoMdClose size={25} />
           </button>
         </div>
-        <div>
-
+        <div className="p-4">
+          <h2 className="text-xl font-semibold mb-4">Menu</h2>
+          <nav className=" space-y-2">
+            <Link
+              to="#"
+              onClick={toggelNavDrawer}
+              className="block text-gray-600 hover:text-black"
+            >
+              Men
+            </Link>
+            <Link
+              to="#"
+              onClick={toggelNavDrawer}
+              className="block text-gray-600 hover:text-black"
+            >
+              Women
+            </Link>
+            <Link
+              to="#"
+              onClick={toggelNavDrawer}
+              className="block text-gray-600 hover:text-black"
+            >
+              Topwear
+            </Link>
+            <Link
+              to="#"
+              onClick={toggelNavDrawer}
+              className="block text-gray-600 hover:text-black"
+            >
+              Bottomwear
+            </Link>
+          </nav>
         </div>
       </div>
     </>
