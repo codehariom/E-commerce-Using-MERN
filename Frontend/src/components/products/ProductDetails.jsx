@@ -47,7 +47,7 @@ const similarProduct =[
         name:"Top",
         price:350,
         img:[{
-            url:"https://picsum.photos/200?random=12"
+            url:"https://picsum.photos/200?random=14"
         }]
     },
     {
@@ -55,7 +55,7 @@ const similarProduct =[
         name:"Saree",
         price:550,
         img:[{
-            url:"https://picsum.photos/200?random=12"
+            url:"https://picsum.photos/200?random=15"
         }]
     },
 ]
