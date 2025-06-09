@@ -12,7 +12,7 @@ function SerachBar() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log("Search item", serachTerm);
+    //  console.log("Search item", serachTerm);
     setIsOpen(!isopen);
   };
 

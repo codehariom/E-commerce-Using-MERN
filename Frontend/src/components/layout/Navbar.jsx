@@ -25,7 +25,7 @@ function Navbar() {
         {/* Logo  */}
         <div>
           <Link to="/" className="text-2xl font-semibold">
-            StylePop
+            Style Pop
           </Link>
         </div>
         {/* Menu  */}
@@ -65,8 +65,8 @@ function Navbar() {
             className=" relative hover:text-black"
           >
             <FaCartShopping size={22} />
-            <span className=" bg-red-600 absolute -top-2 -right-4.5 text-white text-sm rounded-full px-1.5">
-              4
+            <span className=" absolute -top-3 -right-4.5 text-black text-sm my-1">
+              10
             </span>
           </button>
           {/* searchbar */}

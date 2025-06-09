@@ -18,13 +18,13 @@ function Footer() {
             <input
               type="email"
               placeholder="Enter Your Email"
-              className="p-3 w-[250px] text-sm border-t border-l border-b border-gray-300 rounded-l-md
-                        focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all"
+              className="p-3 w-max text-sm border-t border-l border-b border-gray-300 rounded-l-md
+                       outline-2 transition-all"
               required
             />
             <button
               type="submit"
-              className=" bg-orange-300 text-black px-6 py-3 text-sm rounded-r-md hover:bg-orange-500 transition-all"
+              className=" bg-orange-400  outline-2 text-black px-5 py-3 text-sm rounded-r-md hover:bg-orange-500 transition-all"
             >
               Subscribe
             </button>
