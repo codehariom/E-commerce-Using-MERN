@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import loginPic from "/src/assets/login.jpg"
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -7,7 +9,7 @@ function Login() {
 
   return (
     <div className="flex">
-      <div className="w-full md:w-1/2 flex-col justify-center items-center p-8 md:p-12">
+      <div className="w-full md:w-1/2 flex  flex-col justify-center items-center p-8 md:p-12">
         <form
           action=""
           className="w-full max-w-md bg-white p-8 rounded-lg border shadow-sm"
@@ -58,7 +60,13 @@ function Login() {
             className="w-full py-2 mt-2 bg-orange-500 text-white rounded-lg font-semibold">
             Sign-in
           </button>
+          <p className=" mt-2 text-center "> Don't have an account <Link to="/register" className="text-blue-500">Register</Link></p>
         </form>
+      </div>
+      <div className=" hidden md:block w-1/2 bg-gray-800">
+        <div className="h-full flex flex-col justify-center"> 
+            <img src={loginPic} alt="Login to account" className="h-[750px] object-cover object-top" />
+        </div>
       </div>
     </div>
   );
