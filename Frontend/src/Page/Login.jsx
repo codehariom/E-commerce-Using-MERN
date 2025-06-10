@@ -1,18 +1,24 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import loginPic from "/src/assets/login.jpg"
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  //   display data in console
+
+  //   const handleSubmit = (e) =>{
+  //     e.preventDefault();
+  //     console.log("user details",{name,email,password});
+  //   };
+
   return (
     <div className="flex">
-      <div className="w-full md:w-1/2 flex  flex-col justify-center items-center p-8 md:p-12">
+      <div className="w-full  flex  flex-col justify-center items-center p-8 md:p-12">
         <form
-          action=""
-          className="w-full max-w-md bg-white p-8 rounded-lg border shadow-sm"
+          //   onSubmit={handleSubmit}
+          className="w-full max-w-md bg-white p-8 rounded-lg border shadow-xl"
         >
           <div className="flex justify-center mb-4">
             <h2 className="text-xl font-medium">Style Pop</h2>
@@ -31,7 +37,7 @@ function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full p-2 border rounded"
-              placeholder="Enter Your email address"
+              placeholder="Enter Email "
             />
           </div>
 
@@ -43,7 +49,7 @@ function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-2 border rounded pr-20"
-                placeholder="Enter Your Password"
+                placeholder="Enter Password"
               />
               <button
                 type="button"
@@ -57,16 +63,18 @@ function Login() {
 
           <button
             type="submit"
-            className="w-full py-2 mt-2 bg-orange-500 text-white rounded-lg font-semibold">
+            className="w-full py-2 mt-2 bg-orange-500 text-white rounded-lg font-semibold"
+          >
             Sign-in
           </button>
-          <p className=" mt-2 text-center "> Don't have an account <Link to="/register" className="text-blue-500">Register</Link></p>
+          <p className=" mt-2 text-center ">
+            {" "}
+            Don't have an account{" "}
+            <Link to="/register" className="text-blue-500">
+              Register
+            </Link>
+          </p>
         </form>
-      </div>
-      <div className=" hidden md:block w-1/2 bg-gray-800">
-        <div className="h-full flex flex-col justify-center"> 
-            <img src={loginPic} alt="Login to account" className="h-[750px] object-cover object-top" />
-        </div>
       </div>
     </div>
   );

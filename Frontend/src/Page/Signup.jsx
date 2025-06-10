@@ -1,16 +1,23 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  // display data
+  //   const handleSubmit = (e) =>{
+  //     e.preventDefault();
+  //     console.log("user details",{name,email,password});
+  //   };
   return (
     <div className="flex">
-      <div className=" w-full md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12">
+      <div className=" w-full  flex flex-col justify-center items-center p-8 md:p-12">
         <form
-          action=""
-          className=" w-full max-w-md bg-white p-8 rounded-lg border shadow-sm"
+          //   onSubmit={handleSubmit}
+          className=" w-full max-w-md bg-white p-8 rounded-lg border shadow-xl"
         >
           <div className=" flex justify-center mb-4">
             <h2 className=" text-xl font-medium">Style Pop</h2>
@@ -46,11 +53,11 @@ function Signup() {
             </label>
             <div className="relative">
               <input
-                type={showPassword ? "text" :"password"}
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className=" w-full p-2 border rounded"
-                placeholder="Enter Your Full Name"
+                placeholder="Enter Password"
               />
               <button
                 type="button"
@@ -61,6 +68,18 @@ function Signup() {
               </button>
             </div>
           </div>
+          <button
+            type="submit"
+            className=" w-full py-2 mt-2 bg-orange-500 text-white rounded-lg font-semibold"
+          >
+            sign-up
+          </button>
+          <p className=" mt-2 text-center">
+            You Have account{" "}
+            <Link to="/login" className="text-blue-500">
+              Sign-in
+            </Link>
+          </p>
         </form>
       </div>
     </div>
