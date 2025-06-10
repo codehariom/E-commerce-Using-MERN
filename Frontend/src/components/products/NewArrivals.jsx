@@ -88,7 +88,7 @@ function NewArrivals() {
     if (!isDraging) return;
     const x = e.pageX - scrollRef.current.offsetLeft;
     const walk = x - startX;
-    scrollRef.current.scrollLeft = screenLeft - walk;
+    scrollRef.current.scrollLeft = scrollLeft - walk;
   };
 
   const handelMouseUpOrLeave = ()=>{
@@ -96,7 +96,7 @@ function NewArrivals() {
   }
 
   const scroll = (direction) => {
-    const scrollAmount = direction === "left" ? -300 : 300;
+    const scrollAmount = direction === "left" ? -400 : 400;
     scrollRef.current.scrollBy({ left: scrollAmount, behaviour: "smooth" });
   };
 
@@ -104,8 +104,7 @@ function NewArrivals() {
     const container = scrollRef.current;
     if (container) {
       const leftScroll = container.scrollLeft;
-      const rightScroll =
-        container.scrollWidth > leftScroll + container.clientWidth;
+      const rightScroll = container.scrollWidth > leftScroll + container.clientWidth;
       setCanScrollLeft(leftScroll > 0);
       setCanScrollRight(rightScroll);
     }
@@ -128,7 +127,7 @@ function NewArrivals() {
           Discover the Latest styles staright off the runway
         </p>
         {/* Scroll Button  */}
-        <div className=" absolute  right-0 bottom-[-65px] flex space-x-10">
+        <div className=" absolute scroll-smooth right-0 bottom-[-65px] flex space-x-10">
           <button
             onClick={() => scroll("left")}
             disabled={!canScrollLeft}
@@ -163,7 +162,7 @@ function NewArrivals() {
         {Product.map((Product) => (
           <div
             key={Product.productId}
-            className=" min-w-[100%] sm:min-w-[50%] lg:min-w-[30%] relative"
+            className=" scroll-smooth min-w-[100%] sm:min-w-[50%] lg:min-w-[30%] relative"
           >
             <img
               className="w-full object-cover rounded-xl"
@@ -171,7 +170,7 @@ function NewArrivals() {
               src={Product.image[0]?.Url}
               alt={Product.altText || Product.name}
             />
-            <div className=" absolute bottom-0 left-0 right-0 opacity-90 backdrop-blur-sm text-white p-4 rounded-b-lg">
+            <div className=" absolute bottom-0 bg-white left-0 right-0 opacity-80 backdrop-blur-sm text-black p-4 rounded-b-lg">
               <Link to={`/product/${Product.productId}`} className="block">
                 <h4 className=" font-medium">{Product.name}</h4>
                 <p className=" mt-1">${Product.price}</p>
