@@ -14,6 +14,18 @@ function MyOrderPage() {
               name: "T-shirt",
               image: "https://picsum.photos/200?random=1",
             },
+            {
+              name: "T-shirt",
+              image: "https://picsum.photos/200?random=3",
+            },
+            {
+              name: "T-shirt",
+              image: "https://picsum.photos/200?random=1",
+            },
+            {
+              name: "T-shirt",
+              image: "https://picsum.photos/200?random=1",
+            },
           ],
           totalprice: 250,
           isPaid: true,
@@ -110,5 +122,4 @@ function MyOrderPage() {
     </div>
   );
 }
-
 export default MyOrderPage;
