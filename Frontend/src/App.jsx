@@ -6,6 +6,11 @@ import {Toaster} from "sonner"
 import Login from "./Page/Login";
 import Signup from "./Page/Signup";
 import Profile from "./Page/Profile";
+import Collection from "./Page/Collection";
+
+
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -16,6 +21,7 @@ function App() {
           <Route path="login" element={<Login/>} />
           <Route path="register" element={<Signup/>}/>
           <Route path="profile" element={<Profile/>}/>
+          <Route path="collection/:collection" element={<Collection/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
