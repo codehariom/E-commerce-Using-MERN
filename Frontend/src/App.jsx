@@ -23,6 +23,7 @@ function App() {
           <Route path="profile" element={<Profile/>}/>
           <Route path="collection/:collection" element={<Collection/>}/>
         </Route>
+        <Route>{/*Admin Layout*/}</Route>
       </Routes>
     </BrowserRouter>
   );
