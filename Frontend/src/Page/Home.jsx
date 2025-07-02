@@ -6,6 +6,7 @@ import ProductDetails from '../components/products/ProductDetails'
 import ProductGrid from '../components/products/ProductGrid'
 import FeatureProduct from '../components/products/FeatureProduct'
 import FeatureSection from '../components/products/FeatureSection'
+import Faq from '../components/common/Faq'
 
 const placeholderProduct=[
     {
@@ -95,6 +96,7 @@ function Home() {
         </div>
         <FeatureProduct/>
         <FeatureSection/>
+        <Faq/>
     </div>
   )
 }
