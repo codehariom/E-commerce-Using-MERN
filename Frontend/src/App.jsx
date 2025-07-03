@@ -22,7 +22,7 @@ function App() {
           <Route path="login" element={<Login/>} />
           <Route path="register" element={<Signup/>}/>
           <Route path="profile" element={<Profile/>}/>
-          <Route path="collection/all " element={<Collection/>}/>
+          <Route path="collection/all" element={<Collection/>}/>
           <Route path="product/:id" element={<ProductDetails/>}/>
         </Route>
         <Route>{/*Admin Layout*/}</Route>
