@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function FilterSidebar() {
-  const [searchParameter] = useSearchParams();
+  const [searchParameter, setSearchParameter] = useSearchParams();
+  const navigate = useNavigate()
   const [filters, setFilters] = useState({
     category: "",
     gender: "",
@@ -16,23 +17,45 @@ function FilterSidebar() {
 
   const [priceRange, setPriceRange] = useState([0, 100]);
 
-  const handleFilterChange = (e) => {
-    const { name, value, checked, type } = e.target;
-     console.log({name, value, checked, type})
+ const handleFilterChange = (e) => {
+  const { name, value, checked, type } = e.target;
 
-    setFilters((prev) => {
-      if (type === "checkbox") {
-        const list = prev[name];
-        if (checked) {
-          return { ...prev, [name]: [...list, value] };
-        } else {
-          return { ...prev, [name]: list.filter((item) => item !== value) };
+  let newFilter = { ...filters };
+
+  if (type === "checkbox") {
+    if (checked) {
+      newFilter[name] = [...(newFilter[name] || []), value];
+    } else {
+      newFilter[name] = newFilter[name].filter((item) => item !== value);
+    }
+  } else if (type === "radio") {
+    // Toggle logic for radio input (like color)
+    if (filters[name] === value) {
+      newFilter[name] = ""; // Deselect if already selected
+    } else {
+      newFilter[name] = value;
+    }
+  } else {
+    newFilter[name] = value;
+  }
+
+  setFilters(newFilter);
+  updateUrlParams(newFilter);
+};
+
+
+  const updateUrlParams = (newfilter) =>{
+    const params = new URLSearchParams();
+    Object.keys(newfilter).forEach((key)=>{
+        if(Array.isArray(newfilter[key]) && newfilter[key].length>0){
+            params.append(key,newfilter[key].join(","));
+        } else if (newfilter[key]){
+            params.append(key,newfilter[key]);
         }
-      } else {
-        return { ...prev, [name]: value };
-      }
-    });
-  };
+    })
+    setSearchParameter(params) 
+    navigate(`?${params.toString()}`) // ?category=top+ewar&size=M
+  }
 
   useEffect(() => {
     const params = Object.fromEntries([...searchParameter]);
@@ -53,9 +76,26 @@ function FilterSidebar() {
   }, [searchParameter]);
 
   const categories = ["Top Wear", "Bottom Wear"];
-  const colors = ["Red", "Blue", "Green", "Yellow", "Gray", "White", "Navy", "Black"];
+  const colors = [
+    "Red",
+    "Blue",
+    "Green",
+    "Yellow",
+    "Gray",
+    "White",
+    "Navy",
+    "Black",
+  ];
   const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
-  const materials = ["Cotton", "Wool", "Denim", "Polyster", "Silk", "Linen", "Fleece"];
+  const materials = [
+    "Cotton",
+    "Wool",
+    "Denim",
+    "Polyster",
+    "Silk",
+    "Linen",
+    "Fleece",
+  ];
   const brands = ["Urban Thread", "Modern Fit", "Street Style", "Fashionista"];
   const genders = ["Men", "Women"];
 
@@ -82,31 +122,31 @@ function FilterSidebar() {
       </div>
 
       {/* Color Filter */}
-      {/* Color Filter */}
-<div className="mb-6">
-  <label className="block text-black font-medium mb-2">Color</label>
-  <div className="flex flex-wrap gap-3">
-    {colors.map((color) => (
-      <label key={color} className="cursor-pointer">
-        <input
-          type="radio"
-          name="color"
-          value={color}
-          onChange={handleFilterChange}
-          checked={filters.color === color}
-          className="sr-only"
-        />
-        <span
-          className={`inline-block h-8 w-8 rounded-full border-2 transition-transform duration-150 ${
-            filters.color === color ? "border-black scale-110" : "border-gray-200"
-          }`}
-          style={{ backgroundColor: color.toLowerCase() }}
-        ></span>
-      </label>
-    ))}
-  </div>
-</div>
-
+      <div className="mb-6">
+        <label className="block text-black font-medium mb-2">Color</label>
+        <div className="flex flex-wrap gap-3">
+          {colors.map((color) => (
+            <label key={color} className="cursor-pointer">
+              <input
+                type="radio"
+                name="color"
+                value={color}
+                onChange={handleFilterChange}
+                checked={filters.color === color}
+                className="sr-only"
+              />
+              <span
+                className={`inline-block h-8 w-8 rounded-full border-2 transition-transform duration-150 ${
+                  filters.color === color
+                    ? "border-black scale-110"
+                    : "border-gray-200"
+                }`}
+                style={{ backgroundColor: color.toLowerCase() }}
+              ></span>
+            </label>
+          ))}
+        </div>
+      </div>
 
       {/* Size Filter */}
       <div className="mb-6">
