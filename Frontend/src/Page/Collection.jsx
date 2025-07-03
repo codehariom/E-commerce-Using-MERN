@@ -114,7 +114,7 @@ function Collection() {
   });
   return <div className=" flex flex-col lg:flex-row">
     {/* mobile fillter  */}
-    <button onClick={toggle} className=" lg:hidden border rounded  p-3 flex justify-center items-center">
+    <button onClick={toggle} className=" lg:hidden border rounded    p-3 flex justify-center items-center">
       <IoFilterOutline size={25} className="mr-2"/> Filters 
     </button>
     {/* Filter sidebar  */}
@@ -122,7 +122,7 @@ function Collection() {
       <FilterSidebar/>
      </div>
      <div className=" flex-grow p-4">
-      <h2 className=" text-2xl uppercase mb-4 ">All Collection </h2>
+      <h2 className="  mx-4 text-xl uppercase my-4 ">All Collection </h2>
       {/* sort option  */}
 
       {/* product grid  */}

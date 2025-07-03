@@ -18,6 +18,7 @@ function FilterSidebar() {
 
   const handleFilterChange = (e) => {
     const { name, value, checked, type } = e.target;
+     console.log({name, value, checked, type})
 
     setFilters((prev) => {
       if (type === "checkbox") {
@@ -60,7 +61,7 @@ function FilterSidebar() {
 
   return (
     <div className="p-7">
-      <h3 className="text-xl font-medium text-gray-600 mb-6">Filters</h3>
+      <h3 className=" font-medium text-2xl text-gray-600 mb-6">Filters</h3>
 
       {/* Category Filter */}
       <div className="mb-6">
@@ -81,23 +82,31 @@ function FilterSidebar() {
       </div>
 
       {/* Color Filter */}
-      <div className="mb-6">
-        <label className="block text-gray-600 font-medium mb-2">Color</label>
-        {colors.map((color) => (
-          <div key={color} className="flex items-center mb-1">
-            <input
-              
-              name="color"
-              value={color}
-              onChange={handleFilterChange}
-              checked={filters.color === color}
-              className="mr-2 h-6 w-6 rounded-full border cursor-pointer transition hover:scale-110 border-black"
-              style={{ backgroundColor: color.toLowerCase() }}
-            />
-            <span className="ml-2 text-gray-700">{color}</span>
-          </div>
-        ))}
-      </div>
+      {/* Color Filter */}
+<div className="mb-6">
+  <label className="block text-black font-medium mb-2">Color</label>
+  <div className="flex flex-wrap gap-3">
+    {colors.map((color) => (
+      <label key={color} className="cursor-pointer">
+        <input
+          type="radio"
+          name="color"
+          value={color}
+          onChange={handleFilterChange}
+          checked={filters.color === color}
+          className="sr-only"
+        />
+        <span
+          className={`inline-block h-8 w-8 rounded-full border-2 transition-transform duration-150 ${
+            filters.color === color ? "border-black scale-110" : "border-gray-200"
+          }`}
+          style={{ backgroundColor: color.toLowerCase() }}
+        ></span>
+      </label>
+    ))}
+  </div>
+</div>
+
 
       {/* Size Filter */}
       <div className="mb-6">
