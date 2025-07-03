@@ -7,6 +7,7 @@ import Login from "./Page/Login";
 import Signup from "./Page/Signup";
 import Profile from "./Page/Profile";
 import Collection from "./Page/Collection";
+import ProductDetails from "./components/products/ProductDetails";
 
 
 
@@ -21,7 +22,8 @@ function App() {
           <Route path="login" element={<Login/>} />
           <Route path="register" element={<Signup/>}/>
           <Route path="profile" element={<Profile/>}/>
-          <Route path="collection/" element={<Collection/>}/>
+          <Route path="collection/all " element={<Collection/>}/>
+          <Route path="product/:id" element={<ProductDetails/>}/>
         </Route>
         <Route>{/*Admin Layout*/}</Route>
       </Routes>

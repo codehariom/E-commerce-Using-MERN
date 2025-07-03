@@ -43,6 +43,13 @@ function FilterSidebar() {
   updateUrlParams(newFilter);
 };
 
+const handlePriceChange = (e)=>{
+    const newPrice = e.target.value;
+    setPriceRange([0,newPrice])
+    const newfilter = {...filters , minPrice:0 , maxPrice:newPrice}
+    setFilters(filters)
+    updateUrlParams(newfilter)
+}
 
   const updateUrlParams = (newfilter) =>{
     const params = new URLSearchParams();
@@ -229,11 +236,7 @@ function FilterSidebar() {
             min="0"
             max="100"
             value={priceRange[1]}
-            onChange={(e) => {
-              const max = parseInt(e.target.value);
-              setPriceRange([priceRange[0], max]);
-              setFilters((prev) => ({ ...prev, maxPrice: max }));
-            }}
+            onChange={handlePriceChange   }
             className="w-full "
           />
           <span className="text-gray-700">{priceRange[1]}</span>
