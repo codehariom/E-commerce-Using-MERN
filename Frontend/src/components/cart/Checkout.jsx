@@ -31,6 +31,7 @@ function Checkout() {
     pinCode: "",
     country: "",
     phone: "",
+    state:""
   });
 
   return (
@@ -50,6 +51,15 @@ function Checkout() {
               className=" w-full p-2 border rounded "
             />
           </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-4">Phone Number</label>
+            <input
+              type="tel"
+              value="+91 7310302696"
+              placeholder="Enter Your Email Address"
+              className=" w-full p-2 border rounded "
+            />
+          </div>
           <h3 className=" text-lg mb-4">Delivery</h3>
           <div className="mb-4 grid grid-cols-2 gap-4">
             <div className="mb-3">
@@ -57,6 +67,7 @@ function Checkout() {
               <input
                 type="text"
                 value="work.realhariom"
+                onChange={(e)=>setShippingAddress({...shippingAddress, firstName:e.target.value})}
                 placeholder="Enter Your First Name"
                 className=" w-full p-2 border rounded "
               />
@@ -66,7 +77,49 @@ function Checkout() {
               <input
                 type="text"
                 value="realhariom@gmail.com"
+                onChange={(e)=>setShippingAddress({...shippingAddress, lastName:e.target.value})}
                 placeholder="Enter Your Email Address"
+                className="w-full p-2 border rounded "
+              />
+            </div>
+          </div>
+          <div className="mb-4 grid grid-cols-2 gap-4">
+            <div className="mb-3">
+              <label className="block text-gray-700 mb-4">Address</label>
+              <input
+                type="text"
+               onChange={(e)=>setShippingAddress({...shippingAddress, address:e.target.value})}
+
+                placeholder="Enter Your Full Address"
+                className=" w-full p-2 border rounded "
+              />
+            </div>
+            <div className="mb-3">
+              <label className="block text-gray-700 mb-4">City</label>
+              <input
+                type="text"
+                onChange={(e)=>setShippingAddress({...shippingAddress, city:e.target.value})}
+                placeholder="Enter Your City"
+                className="w-full p-2 border rounded "
+              />
+            </div>
+          </div>
+          <div className="mb-4 grid grid-cols-2 gap-4">
+            <div className="mb-3">
+              <label className="block text-gray-700 mb-4">State</label>
+              <input
+                type="text"
+                onChange={(e)=>setShippingAddress({...shippingAddress, state:e.target.value})}
+                placeholder="Enter Your State"
+                className=" w-full p-2 border rounded "
+              />
+            </div>
+            <div className="mb-3">
+              <label className="block text-gray-700 mb-4">Pin Code</label>
+              <input
+                type="number"
+                value="varanasi"
+                placeholder="Enter Your Pin Code"
                 className="w-full p-2 border rounded "
               />
             </div>
