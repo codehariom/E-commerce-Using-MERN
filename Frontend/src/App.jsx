@@ -8,6 +8,7 @@ import Signup from "./Page/Signup";
 import Profile from "./Page/Profile";
 import Collection from "./Page/Collection";
 import ProductDetails from "./components/products/ProductDetails";
+import Checkout from "./components/cart/Checkout";
 
 
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="profile" element={<Profile/>}/>
           <Route path="collection/all" element={<Collection/>}/>
           <Route path="product/:id" element={<ProductDetails/>}/>
+          <Route path="/checkout" element={<Checkout/>}/>
         </Route>
         <Route>{/*Admin Layout*/}</Route>
       </Routes>
