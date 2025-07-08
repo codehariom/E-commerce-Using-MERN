@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Paypal from "./Paypal";
 
 const cart = {
   product: [
@@ -19,12 +18,14 @@ const cart = {
       image: "https://picsum.photos/200?random=11",
     },
   ],
-  totalprice: 270,
+  totalprice: 570,
 };
 
 function Checkout() {
   const navigate = useNavigate();
   const [checkoutId, setCheckoutId] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [orderConfirmed, setOrderConfirmed] = useState(false);
 
   const [shippingAddress, setShippingAddress] = useState({
     firstName: "",
@@ -40,7 +41,6 @@ function Checkout() {
   const handleCreateCheckout = (e) => {
     e.preventDefault();
 
-    // Optional: basic validation
     if (
       !shippingAddress.firstName ||
       !shippingAddress.lastName ||
@@ -48,19 +48,14 @@ function Checkout() {
       !shippingAddress.city ||
       !shippingAddress.state ||
       !shippingAddress.pinCode ||
-      !shippingAddress.phone
+      !shippingAddress.phone ||
+      !paymentMethod
     ) {
-      alert("Please fill in all the fields.");
+      alert("Please fill in all the fields and select a payment method.");
       return;
     }
 
-    // Proceed to show PayPal button
-    setCheckoutId(123); // Simulating a created checkout ID
-  };
-
-  const handlePaymentSuccess = (details) => {
-    console.log("Payment successful!", details);
-    navigate("/order-confirmation");
+    setCheckoutId("mock-checkout-id");
   };
 
   return (
@@ -174,7 +169,32 @@ function Checkout() {
             </div>
           </div>
 
-          {/* Submit or PayPal */}
+          {/* Payment Method */}
+          <h3 className="text-lg mb-4">Payment Method</h3>
+          <div className="mb-6 space-y-2">
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="paypal"
+                checked={paymentMethod === "paypal"}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />
+              <span>Pay with PayPal</span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="cod"
+                checked={paymentMethod === "cod"}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />
+              <span>Cash on Delivery</span>
+            </label>
+          </div>
+
+          {/* Checkout or Confirmation */}
           {!checkoutId ? (
             <button
               type="submit"
@@ -182,45 +202,73 @@ function Checkout() {
             >
               Checkout Now
             </button>
-          ) : (
+          ) : paymentMethod === "paypal" ? (
             <div>
               <h3 className="text-lg mb-4">Pay with PayPal</h3>
-              <Paypal
-                amount="270.00"
-                onSuccess={handlePaymentSuccess}
-                onError={(err) => {
-                  console.error("Payment error:", err);
-                }}
-              />
+              {/* Place your <Paypal /> component here */}
             </div>
+          ) : !orderConfirmed ? (
+            <div className="space-y-4">
+              <h3 className="text-lg text-green-600 font-bold">
+                Cash on Delivery Selected
+              </h3>
+              <button
+                type="button"
+                onClick={() => {
+                  setOrderConfirmed(true);
+                  setTimeout(() => {
+                    navigate("/order-confirmation");
+                  }, 1500);
+                }}
+                className="bg-green-600 text-white p-3 w-full rounded hover:bg-green-700 transition"
+              >
+                Confirm Order
+              </button>
+            </div>
+          ) : (
+            <div className="text-green-700 text-lg font-semibold">
+              🎉 Your order has been placed successfully with Cash on Delivery!
+            </div>  
           )}
         </form>
       </div>
 
-      {/* Right section (Cart summary) */}
-      <div className="bg-white rounded-lg p-6">
+      {/* Right section (Cart Summary) */}
+      <div className="bg-gray-300 rounded-lg p-10">
         <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
-        <div className="  py-4 mb-4 ">
-            {cart.product.map((item, index) => (
-          <div key={index} className="flex items-center  justify-between border-t  py-2 gap-4 mb-4">
-            <div className=" flex items-start">
+        <div className="py-4 mb-4">
+          {cart.product.map((item, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between border-b py-2 mb-3"
+            >
               <img
-              src={item.image}
-              alt={item.name}
-              className="w-20 h-20 object-cover  rounded"
-            />
+                src={item.image}
+                alt={item.name}
+                className="w-20 h-20 object-cover rounded"
+              />
+              <div className="space-y-1 text-sm">
+                <h4 className="font-semibold capitalize">{item.name}</h4>
+                <p>Size: {item.size}</p>
+                <p>Color: {item.Color}</p>
+                <p>Price: ₹{item.price}</p>
+              </div>
             </div>
-            <div>
-              <h4 className="font-semibold capitalize">{item.name}</h4>
-              <p>Size: {item.size}</p>
-              <p>Color: {item.Color}</p>
-              <p>Price: ₹{item.price}</p>
-            </div>
-          </div>
-        ))}
+          ))}
         </div>
-        <div className="text-right border-t-4  font-bold text-lg">
-          Total: ₹{cart.totalprice}
+        <div className="grid justify-end space-y-3 pt-4 place-items-end w-full border-t-3">
+          <div className="text-right flex space-x-2 text-lg">
+            <p className="font-semibold">Sub Total:</p>
+            <p>₹{cart.totalprice?.toLocaleString()}</p>
+          </div>
+          <div className="text-right flex space-x-2 text-lg">
+            <p className="font-semibold">Shipping Charge:</p>
+            <p>₹100</p>
+          </div>
+          <div className="text-left flex bg-black text-white p-2 rounded space-x-2 mt-4 text-xl">
+            <p className="font-semibold">Total:</p>
+            <p>₹{(cart.totalprice + 100).toLocaleString()}</p>
+          </div>
         </div>
       </div>
     </div>

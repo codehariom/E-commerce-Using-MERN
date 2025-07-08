@@ -7,9 +7,9 @@ import {useNavigate} from "react-router-dom"
 function CartDrawer({ cartDrawer, toggleCartDrawer }) {
   const navigate  = useNavigate();
  const handelCheckout =()=>{
+      toggleCartDrawer()
       navigate("/checkout")
- } 
-
+ }   
   return (
     <div
       className={` fixed top-0 right-0 w-2/4 sm:w-1/2 md:w-[25rem] h-full bg-white shadow-lg transform transition-transform  duration-300 flex flex-col z-50 ${
