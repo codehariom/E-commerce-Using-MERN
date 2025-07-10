@@ -41,7 +41,7 @@ function Faq() {
   };
 
   return (
-    <div className="w-auto mx-auto p-6 bg-gray-100 mb-7">
+    <div className="w-auto mx-auto p-6 mb-7">
       <h2 className=" text-black font-semibold text-2xl text-center  mb-7">
         Frequently asked questions (FAQs)
       </h2>
