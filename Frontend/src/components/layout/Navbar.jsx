@@ -31,25 +31,25 @@ function Navbar() {
         {/* Menu  */}
         <div className=" hidden md:flex space-x-6">
           <Link
-            to="collection/:collection"
+            to="/collection/all?gender=man"
             className="text-gray-700 hover:text-black text-sm font-semibold uppercase"
           >
-            Men
+            Man 
           </Link>
           <Link
-            to="collection/:collection"
+            to="/collection/all?gender=woman"
             className="text-gray-700 hover:text-black text-sm font-semibold uppercase"
           >
-            Women
+            Woman 
           </Link>
           <Link
-            to="#"
+            to="/collection/all?gender=top-wear"
             className="text-gray-700 hover:text-black text-sm font-semibold uppercase"
           >
             Top wear
           </Link>
           <Link
-            to="#"
+            to="/collection/all?gender=bottom-wear"
             className="text-gray-700 hover:text-black text-sm font-semibold uppercase"
           >
             Bottom Wear
@@ -96,28 +96,28 @@ function Navbar() {
           <h2 className="text-xl font-semibold mb-4">Menu</h2>
           <nav className=" space-y-2">
             <Link
-              to="#"
+              to="/collection/all?gender=man"
               onClick={toggelNavDrawer}
               className="block text-gray-600 hover:text-black"
             >
               Men
             </Link>
             <Link
-              to="#"
+              to="/collection/all?gender=woman"
               onClick={toggelNavDrawer}
               className="block text-gray-600 hover:text-black"
             >
               Women
             </Link>
             <Link
-              to="#"
+              to="/collection/all?gender=top-wear"
               onClick={toggelNavDrawer}
               className="block text-gray-600 hover:text-black"
             >
               Topwear
             </Link>
             <Link
-              to="#"
+              to="/collection/all?gender=bottom-wear"
               onClick={toggelNavDrawer}
               className="block text-gray-600 hover:text-black"
             >
