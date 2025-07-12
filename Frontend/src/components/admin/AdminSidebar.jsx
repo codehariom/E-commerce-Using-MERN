@@ -18,7 +18,7 @@ function AdminSidebar() {
 
   return (
     <div className="p-6 bg-gray-800 h-full min-h-screen  text-white">
-      <h2 className="text-lg font-medium mb-10 text-center">Rabbit Dashboard</h2>
+      <h2 className="text-xl font-medium mb-10 text-center">Style Pop Dashboard</h2>
       <nav className="flex flex-col space-y-2">
         <NavLink to="/admin" className={getNavLinkClass}>
           <FaChartSimple/>
@@ -36,7 +36,7 @@ function AdminSidebar() {
           <FaClipboardList />
           <span>Orders</span>
         </NavLink>
-        <NavLink to="/admin/shop" className={getNavLinkClass}>
+        <NavLink to="/" className={getNavLinkClass}>
           <FaShop />
           <span>Shop</span>
         </NavLink>
