@@ -5,7 +5,7 @@ function UserManagement() {
     {
       _id: 123,
       name: "Hariom",
-      email: "Hariom@gmail.com",
+      email: "hariom@gmail.com",
       role: "admin",
     },
   ]);
@@ -19,13 +19,6 @@ function UserManagement() {
     role: "customer",
   });
 
-  const handleDeleteUser = (userId) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      console.log("User deleted:", userId);
-      // Here, you can call an API or update the state
-    }
-  };
-
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -33,21 +26,38 @@ function UserManagement() {
     }));
   };
 
-  const handleRoleChange = (userId, newRole) => {
-    console.log({ id: userId, role: newRole });
-    // Here, update the user role via API or local state if needed
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("User Added:", formData);
-    // Here, send data to API or update the user list
+
+    const newUser = {
+      _id: Date.now(), // simple unique ID
+      name: formData.name,
+      email: formData.email,
+      role: formData.role,
+    };
+
+    setUsers((prevUsers) => [...prevUsers, newUser]);
+
     setFormData({
       name: "",
       email: "",
       password: "",
       role: "customer",
     });
+  };
+
+  const handleDeleteUser = (userId) => {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
+    }
+  };
+
+  const handleRoleChange = (userId, newRole) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user._id === userId ? { ...user, role: newRole } : user
+      )
+    );
   };
 
   return (
@@ -60,7 +70,7 @@ function UserManagement() {
         <form onSubmit={handleSubmit}>
           <div className="grid sm:grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block mb-2 text-gray-800">Name</label>
+              <label className="block mb-2">Name</label>
               <input
                 type="text"
                 name="name"
@@ -71,7 +81,7 @@ function UserManagement() {
               />
             </div>
             <div>
-              <label className="block mb-2 text-gray-800">Email</label>
+              <label className="block mb-2">Email</label>
               <input
                 type="email"
                 name="email"
@@ -85,7 +95,7 @@ function UserManagement() {
 
           <div className="grid sm:grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block mb-2 text-gray-800">Password</label>
+              <label className="block mb-2">Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -98,20 +108,19 @@ function UserManagement() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm text-black"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm"
                 >
                   {showPassword ? "Hide" : "Show"}
                 </button>
               </div>
             </div>
             <div>
-              <label className="block mb-2 text-gray-800">Role</label>
+              <label className="block mb-2">Role</label>
               <select
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
-                required
               >
                 <option value="customer">Customer</option>
                 <option value="admin">Admin</option>
@@ -128,8 +137,8 @@ function UserManagement() {
         </form>
       </div>
 
-      {/* User List Table */}
-      <div className="overflow-x-auto shadow rounded-lg bg-white">
+      {/* Users Table */}
+      <div className="overflow-x-auto bg-white shadow rounded-lg">
         <table className="min-w-full text-left text-gray-700">
           <thead className="bg-gray-200 text-xs uppercase">
             <tr>
@@ -151,7 +160,7 @@ function UserManagement() {
                       onChange={(e) =>
                         handleRoleChange(user._id, e.target.value)
                       }
-                      className=" p-1 border rounded"
+                      className="p-2 border rounded"
                     >
                       <option value="customer">Customer</option>
                       <option value="admin">Admin</option>
@@ -160,7 +169,7 @@ function UserManagement() {
                   <td className="p-4">
                     <button
                       onClick={() => handleDeleteUser(user._id)}
-                      className="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600"
+                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                     >
                       Delete
                     </button>
