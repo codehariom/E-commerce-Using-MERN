@@ -14,6 +14,7 @@ import OrderDetails from "./Page/OrderDetails";
 import MyOrderPage from "./components/products/MyOrderPage";
 import AdminLayout from "./components/admin/AdminLayout";
 import AdminHomaPage from "./Page/AdminHomaPage";
+import UserManagement from "./components/admin/UserManagement";
 
 
 function App() {
@@ -35,7 +36,8 @@ function App() {
         </Route>
         {/*Admin Layout*/}
         <Route path="/admin" element={<AdminLayout/>}>
-          <Route index element={<AdminHomaPage/>}></Route>
+          <Route index element={<AdminHomaPage/>}/>
+          <Route path="users" element={<UserManagement/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
