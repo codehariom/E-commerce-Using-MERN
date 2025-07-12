@@ -57,6 +57,9 @@ function Navbar() {
         </div>
         {/* CTA Button  */}
         <div className=" flex items-center space-x-7">
+           <Link to="/admin">
+            <p className="text-white hover:text-black bg-orange-500 py-1 px-4 rounded ">Admin</p>
+          </Link>
           <Link to="/profile" className="text-gray-700 hover:text-black ">
             <FaUser size={20} />
           </Link>
