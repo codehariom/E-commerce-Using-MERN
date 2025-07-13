@@ -1,6 +1,6 @@
 import React from "react";
-import { FaDatabase, FaSignOutAlt } from "react-icons/fa";
-import { FaBoxOpen, FaChartSimple, FaClipboardList, FaShop, FaUser } from "react-icons/fa6";
+import { FaDatabase, FaProductHunt, FaSignOutAlt } from "react-icons/fa";
+import { FaBoxOpen, FaCartShopping, FaChartSimple, FaClipboardList, FaShop, FaUser } from "react-icons/fa6";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
 function AdminSidebar() {
@@ -36,9 +36,9 @@ function AdminSidebar() {
           <FaClipboardList />
           <span>Orders</span>
         </NavLink>
-        <NavLink to="/" className={getNavLinkClass}>
-          <FaShop />
-          <span>Shop</span>
+        <NavLink to="/admin/products/new" className={getNavLinkClass}>
+          <FaCartShopping />
+          <span>Create Product </span>
         </NavLink>
       </nav>
       <div className="mt-6">

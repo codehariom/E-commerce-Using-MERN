@@ -17,6 +17,8 @@ import AdminHomaPage from "./Page/AdminHomaPage";
 import UserManagement from "./components/admin/UserManagement";
 import ProductManagement from "./components/admin/ProductManagement";
 import OrderManagement from "./components/admin/OrderManagement";
+import EditProductPage from "./components/admin/EditProductPage";
+import NewProductPage from "./components/admin/NewProductPage";
 
 
 function App() {
@@ -42,6 +44,8 @@ function App() {
           <Route path="users" element={<UserManagement/>}/>
           <Route path="products" element={<ProductManagement/>}/>
           <Route path="orders" element={<OrderManagement/>}/>
+          <Route path="products/:id/edit" element={<EditProductPage/>}/>
+          <Route path="products/new" element={<NewProductPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
