@@ -59,7 +59,7 @@ function NewProductPage() {
 
   return (
     <div className="max-w-5xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">Create New Product</h2>
+      <h2 className="text-2xl font-semibold mb-6">Create New Product</h2>
 
       <form
         onSubmit={handleSubmit}
@@ -167,7 +167,7 @@ function NewProductPage() {
         />
 
         {/* Image upload */}
-        <div className="col-span-1 md:col-span-2">
+        <div className="col-span-1 grid gap-5  md:col-span-2">
           <label className="block mb-2 font-medium">Upload Product Images</label>
           <input
             type="file"
@@ -175,7 +175,7 @@ function NewProductPage() {
             multiple
             placeholder="select the Image"
             onChange={handleImageUpload}
-            className="mb-4 border py-2 px-4"
+            className="p-2 sm:border rounded border-l-5 "
           />
 
           {/* Image Preview */}

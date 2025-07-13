@@ -62,7 +62,7 @@ function UserManagement() {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-4">User Management</h2>
+      <h2 className="text-2xl font-semibold mb-4">User Management</h2>
 
       {/* Add New User Form */}
       <div className="bg-white p-6 rounded-lg shadow mb-6">

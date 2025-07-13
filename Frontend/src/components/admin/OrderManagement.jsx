@@ -51,13 +51,13 @@ function OrderManagement() {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-4">Order Management</h2>
+      <h2 className="text-2xl font-semibold mb-4">Order Management</h2>
 
       {/* 🔍 Search Bar */}
       <div className="mb-4 w-full md:w-1/2 flex items-center gap-5  ">
         <input
           type="text"
-          placeholder="Search by Order ID or Customer Name"
+          placeholder="Search by Order ID "
           value={searchTerm}
           onChange={handleSearch}
           className="w-full  px-4 py-2 border  rounded shadow-sm "

@@ -20,11 +20,11 @@ function ProductManagement() {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Product Management</h2>
+      <div className="grid gap-5 sm:flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold">Product Management</h2>
         <Link
           to="/admin/products/new"
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-500"
+          className="bg-green-600 text-sm text-white px-4 py-2 rounded hover:bg-green-500"
         >
           + Create New Product
         </Link>
