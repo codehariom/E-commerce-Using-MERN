@@ -1,55 +1,58 @@
 import express from "express";
+import connectDb from "./database/db.js";
 import dotenv from "dotenv";
 import cors from "cors";
-import connect_db from "./Database/db.js";
 
+
+// express app 
+const app = express();
 
 // config .env
 dotenv.config();
 
-// express appp
-const app = express();
-
 
 // config cors
-
 const allowedOrigins = [
-    "http://localhost:5173",
-    // server depoyment link
-];
+  'http://localhost:5173',
+  // live server url
+  // 'https://clickurl-r72u.onrender.com'
+]; 
 
-app.use(
-    cors({
-        origin: function (origin, callback) {
-            if (!origin || allowedOrigins.includes(origin)) {
-                callback(null, true);
-            } else {
-                callback(new Error("Not Allowed by Cors"));
-            }
-        },
-        credentials: true,
-    })
-);
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
 
-// Running Port
 
-const PORT = process.env.PORT || 8001;
+// Port 
+const port = process.env.PORT || 8001;
 
-//  Connecting database
-
-connect_db()
-    .then(() => {
-        app.listen(PORT, () => {
-            console.log(`Server is Now Running on This ${PORT}`);
-        });
-    })
-    .catch((err) => {
-        console.error("Failed to Connect to Database", err);
+// Connecting database
+connectDb().then(() => {
+    app.listen(port, () => {
+        console.log(`Server is running on ${port}`);
     });
+}).catch(err => {
+    console.error("Failed to connect to DB:", err);
+});
 
-app.use(express.json({ limit: "200kb" }));
-app.use(express.urlencoded({ extended: true, limit: "200kb" }));
+
+
+app.use(express.json({limit:"200kb"}));
+app.use(express.urlencoded({extended:true, limit:"200kb"}))
+
+
 
 // Route
 
-//  Route Api version
+import userRoute from "../Backend/Routes/userRoutes.js"
+
+// api Version Routes
+
+app.use("/api/user",userRoute)
