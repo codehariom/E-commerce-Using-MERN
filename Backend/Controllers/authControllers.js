@@ -5,11 +5,9 @@ import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 
 // .env config
-
 dotenv.config();
 
 // user register 
-
 export const registerUser = expressAsyncHandler(async(req,res)=>{
     const name = req.body.name?.trim();
     const email =req.body.email?.trim().toLowerCase();
@@ -45,7 +43,6 @@ export const registerUser = expressAsyncHandler(async(req,res)=>{
 })
 
 // Login User 
-
 export const loginUser = expressAsyncHandler (async(req,res)=>{
     const{email,password} = req.body;
 
@@ -84,7 +81,6 @@ process.env.Jwt_Secret,
 
 
 // user profile
-
 export const userProfile = expressAsyncHandler(async(req, res) => {
     try {
         // Fetch user from MongoDB using the user ID from req.user
@@ -107,7 +103,6 @@ export const userProfile = expressAsyncHandler(async(req, res) => {
 });
 
 // user logout 
-
 export const userLogout = (req, res)=>{
     res.json({message:"Logout Sucessfully"})
 }
