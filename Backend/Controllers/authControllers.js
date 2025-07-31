@@ -39,6 +39,7 @@ export const registerUser = expressAsyncHandler(async(req,res)=>{
             password:newUser.password
         }
     })
+    
 
 })
 
@@ -58,7 +59,7 @@ export const loginUser = expressAsyncHandler (async(req,res)=>{
     }
 
     const userCount = await User.countDocuments();
-    if(userCount===0){
+    if(userCount === 0){
         return res.status(403).json({message:"No user Registerd"});
     }
 
@@ -76,33 +77,62 @@ export const loginUser = expressAsyncHandler (async(req,res)=>{
 process.env.Jwt_Secret,
 {expiresIn:process.env.Jwt_timeout}
 )
+return res.status(200).json({ accessToken });
 
 })
 
 
 // user profile
-export const userProfile = expressAsyncHandler(async(req, res) => {
+export const userProfile = expressAsyncHandler(async (req, res) => {
     try {
-        // Fetch user from MongoDB using the user ID from req.user
+        // Check if user is authenticated
+        if (!req.user || !req.user._id) {
+            return res.status(401).json({ success: false, message: 'Unauthorized' });
+        }
+
+        // Fetch user from MongoDB
         const user = await User.findById(req.user._id).select('name email role');
 
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ success: false, message: 'User not found' });
         }
 
         // Return user data
         res.json({
-            user: user.name,
-            email: user.email,
-            role: user.role
+            success: true,
+            data: {
+                name: user.name,
+                email: user.email,
+                role: user.role
+            }
         });
     } catch (error) {
         console.error('Error fetching user profile:', error);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ success: false, message: 'Server error' });
     }
 });
 
 // user logout 
-export const userLogout = (req, res)=>{
-    res.json({message:"Logout Sucessfully"})
-}
+export const userLogout = expressAsyncHandler(async(req, res)=>{
+    try {
+        // check if user is authenticated
+        if(!req.user){
+            return res.status(401).json({success:false,
+                message:"Unauthorized"
+            })
+        }
+        // clear authentitcation cokkie or remove jwt secret 
+        res.clearCookie('token',{
+            httpOnly:true,
+            sameSite:"strict"
+        })
+
+        res.json({
+            success:true,
+            message:"Logged out successfully"
+        })
+    } catch (error) {
+        console.error("Error during logout",error);
+        res.status(500).json({message:"server Error",success:false})
+    }
+})
