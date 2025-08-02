@@ -46,6 +46,4 @@ router.get("/:id", singleProduct)
 // @access Public
 router.get("/similar/:id", similarProduct)
 
-
-
 export default router;

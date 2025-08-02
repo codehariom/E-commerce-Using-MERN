@@ -230,73 +230,74 @@ export const allProduct = expressAsyncHandler(async (req, res) => {
             .limit(Number(limit) || 0);
         res.json(products);
     } catch (error) {
-        console.error({ message: "Serror Error ",error });
+        console.error({ message: "Serror Error ", error });
         res.status(500).json({
             message: "Error to fetching the product from Database",
         });
     }
 });
 
-// get a single Product by id for user 
-export const singleProduct = expressAsyncHandler(async(req, res)=> {
-try {
-    const prodcut = await Product.findById(req.params.id);
-    if(prodcut){
-        res.json(prodcut);
-    }else{
-        res.status(404).json({message:"Product is not Found"})
-    }
-} catch (error) {
-    console.error("Error",error)
-    res.status(500).send("Server Error")
-} 
-})
-
-// get similar product based on the current product gender and category 
-export const similarProduct = expressAsyncHandler(async(req, res)=>{
-    const {id} = req.params;
+// get a single Product by id for user
+export const singleProduct = expressAsyncHandler(async (req, res) => {
     try {
-        const product = await Product.findById(id)
-        if(!product){
-            return res.status(404).json({message:"Product not found"})
+        const prodcut = await Product.findById(req.params.id);
+        if (prodcut) {
+            res.json(prodcut);
+        } else {
+            res.status(404).json({ message: "Product is not Found" });
+        }
+    } catch (error) {
+        console.error("Error", error);
+        res.status(500).send("Server Error");
+    }
+});
+
+// get similar product based on the current product gender and category
+export const similarProduct = expressAsyncHandler(async (req, res) => {
+    const { id } = req.params;
+    try {
+        const product = await Product.findById(id);
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
         }
         const similarProduct = await Product.find({
-             id:{$ne:id},
-             gender:product.gender,
-             category:product.category
-        }).limit(4)
+            id: { $ne: id },
+            gender: product.gender,
+            category: product.category,
+        }).limit(4);
 
         res.json(similarProduct);
     } catch (error) {
-        console.error(error)
-        res.status(500).send({message:"Server error"})
+        console.error(error);
+        res.status(500).send({ message: "Server error" });
     }
-})
+});
 
 // get the best seller product
-export const bestSeller = expressAsyncHandler(async(req,res)=>{
+export const bestSeller = expressAsyncHandler(async (req, res) => {
     try {
-         const bestSeller = await Product.findOne().sort({rating:-1});
-         if(bestSeller){
+        const bestSeller = await Product.findOne().sort({ rating: -1 });
+        if (bestSeller) {
             res.json(bestSeller);
-         }else{
-            res.status(404).json({message:"No best seller found"})
-         }
+        } else {
+            res.status(404).json({ message: "No best seller found" });
+        }
     } catch (error) {
-        console.error(error)
-        res.status(500).send({message:"Server error"})
+        console.error(error);
+        res.status(500).send({ message: "Server error" });
     }
-})
+});
 
 // get the new arrivals product
-
-export const newArrivals = expressAsyncHandler(async(req, res)=>{
+export const newArrivals = expressAsyncHandler(async (req, res) => {
     try {
         // fetch the 8 product
-        const newArrivals = await Product.find().sort({createdAt:-1}).limit(8)
-        res.json(newArrivals)
+        const newArrivals = await Product.find()
+            .sort({ createdAt: -1 })
+            .limit(8);
+        res.json(newArrivals);
     } catch (error) {
-        console.error(error)
-        res.status(500).send({message:"Server error"})
+        console.error(error);
+        res.status(500).send({ message: "Server error" });
     }
-})
+});
