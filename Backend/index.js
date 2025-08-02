@@ -52,7 +52,9 @@ app.use(express.urlencoded({extended:true, limit:"200kb"}))
 // Route
 
 import userRoute from "../Backend/Routes/userRoutes.js"
+import productRoute from "../Backend/Routes/productRoutes.js"
 
 // api Version Routes
 
 app.use("/api/user",userRoute)
+app.use("/api/products",productRoute)
