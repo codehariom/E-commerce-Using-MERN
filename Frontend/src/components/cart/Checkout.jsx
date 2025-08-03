@@ -234,7 +234,7 @@ function Checkout() {
       </div>
 
       {/* Right section (Cart Summary) */}
-      <div className="bg-gray-300 rounded-lg p-10">
+      <div className="bg-gray-100 rounded-lg p-10">
         <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
         <div className="py-4 mb-4">
           {cart.product.map((item, index) => (
