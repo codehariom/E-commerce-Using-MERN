@@ -50,11 +50,12 @@ app.use(express.urlencoded({extended:true, limit:"200kb"}))
 
 
 // Route
-
 import userRoute from "../Backend/Routes/userRoutes.js"
 import productRoute from "../Backend/Routes/productRoutes.js"
+import cartRoute from "../Backend/Routes/cartRoutes.js";
 
 // api Version Routes
-
 app.use("/api/user",userRoute)
 app.use("/api/products",productRoute)
+app.use("/api/cart",cartRoute)
+// app.use("/api/checkout",)
