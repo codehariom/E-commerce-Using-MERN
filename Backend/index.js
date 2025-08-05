@@ -56,6 +56,7 @@ import cartRoute from "../Backend/Routes/cartRoutes.js";
 import checkoutRoute from "../Backend/Routes/checkoutRoutes.js"
 import orderRoute from "../Backend/Routes/orderRoutes.js"
 import uploadRoute from "../Backend/Routes/uploadRoutes.js"
+import subscriber from "../Backend/Routes/subscriberRoutes.js"
 
 // api Version Routes
 app.use("/api/user",userRoute)
@@ -64,3 +65,4 @@ app.use("/api/cart",cartRoute)
 app.use("/api/checkout",checkoutRoute)
 app.use("/api/order",orderRoute)
 app.use("/api/upload",uploadRoute)
+app.use("/api/subscribe",subscriber)
