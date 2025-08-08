@@ -39,7 +39,7 @@ function AdminHomePage() {
           <h2 className="text-xl font-semibold mb-2">Revenue</h2>
           <p className="text-3xl font-bold text-green-600">$12,045</p>
         </div>
-        <div className="bg-white shadow-sm p-4 rounded">
+        <div className="bg-white shadow-sm  p-4 rounded">
           <h2 className="text-xl font-semibold mb-2">Total Orders</h2>
           <p className="text-3xl font-bold">45</p>
           <Link to="/admin/orders" className="text-blue-600 hover:underline mt-2 block">
