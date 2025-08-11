@@ -57,6 +57,9 @@ import checkoutRoute from "../Backend/Routes/checkoutRoutes.js"
 import orderRoute from "../Backend/Routes/orderRoutes.js"
 import uploadRoute from "../Backend/Routes/uploadRoutes.js"
 import subscriber from "../Backend/Routes/subscriberRoutes.js"
+import adminRoutes from "../Backend/Routes/adminRoutes.js"
+import adminProduct from "../Backend/Routes/productAdminRoutes.js"
+import adminOrder from "../Backend/Routes/adminOrderRoutes.js"
 
 // api Version Routes
 app.use("/api/user",userRoute)
@@ -66,4 +69,7 @@ app.use("/api/checkout",checkoutRoute)
 app.use("/api/order",orderRoute)
 app.use("/api/upload",uploadRoute)
 app.use("/api/subscribe",subscriber)
+app.use("/api/admin",adminRoutes)
+app.use("/api/admin/product",adminProduct)
+app.use("/api/admin/order",adminOrder)
 
