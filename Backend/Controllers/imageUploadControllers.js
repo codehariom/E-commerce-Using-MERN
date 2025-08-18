@@ -41,4 +41,5 @@ export const imageProductUpload = expressAsyncHandler(async (req, res) => {
         console.error("Error uploading to Cloudinary:", error);
         res.status(500).json({ message: "Server error" });
     }
-});
+}); 
+
