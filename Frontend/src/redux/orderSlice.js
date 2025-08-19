@@ -54,7 +54,7 @@ const orderSlice = createSlice({
             state.loading=false;
             state.orders=action.payload
         })
-        .addCase(fetchUserOrder.pending,(state,action)=>{
+        .addCase(fetchUserOrder.rejected,(state,action)=>{
             state.loading=false;
             state.error=action.payload.message
         })
@@ -68,7 +68,7 @@ const orderSlice = createSlice({
             state.loading=false;
             state.orderDetails=action.payload
         })
-        .addCase(fetchOrderById.pending,(state,action)=>{
+        .addCase(fetchOrderById.rejected,(state,action)=>{
             state.loading=false;
             state.error=action.payload.message
         })

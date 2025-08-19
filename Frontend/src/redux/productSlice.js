@@ -69,13 +69,19 @@ export const updateProduct = createAsyncThunk(
 
 // async thunk to fetch similar products
 export const fetchSimilarProducts = createAsyncThunk(
-    "product/fetchSimilarProducts",
-    async ({ id }) => {
-        const response = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/api/products/similar.${id}`
-        );
-        return response.data;
+  "product/fetchSimilarProducts",
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/products/similar/${id}` // Fixed typo
+      );
+      console.log("fetchSimilarProducts Response:", response.data); // Debug API response
+      return response.data;
+    } catch (error) {
+      console.error("fetchSimilarProducts Error:", error);
+      return rejectWithValue(error.response?.data || "Failed to fetch similar products");
     }
+  }
 );
 
 //product slice
@@ -185,7 +191,7 @@ const productSlice = createSlice({
             })
             .addCase(fetchSimilarProducts.fulfilled, (state, action) => {
                 state.loading = false;
-                state.products = action.payload;
+                state.similarProduct  = action.payload;
             })
             .addCase(fetchSimilarProducts.rejected, (state, action) => {
                 state.loading = false;

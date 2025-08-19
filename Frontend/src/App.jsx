@@ -36,7 +36,7 @@ function App() {
           <Route path="register" element={<Signup/>}/>
           <Route path="profile" element={<Profile/>}/>
           <Route path="collection/all" element={<Collection/>}/>
-          <Route path="product/:id" element={<ProductDetails/>}/>
+          <Route path="products/:id" element={<ProductDetails/>}/>
           <Route path="/checkout" element={<Checkout/>}/>
           <Route path="order-confirmation" element={<OrderConfirmation/>}/>
           <Route path ="/my-order" element={<MyOrderPage/>}/>
