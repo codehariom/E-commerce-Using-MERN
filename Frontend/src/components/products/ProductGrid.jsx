@@ -20,7 +20,7 @@ const ProductsGrid = ({ products = [], loading, error }) => {
             to={`/products/${product._id || product.id}`}
             className="block"
           >
-            <div className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+            <div className="bg-white p-4 h-full rounded-lg shadow hover:shadow-lg transition">
               <div className="w-full h-96 mb-4">
                 <img
                   src={product.images?.[0]?.url || "/placeholder.png"}

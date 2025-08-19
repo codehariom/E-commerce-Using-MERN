@@ -9,7 +9,7 @@ import { addToCart } from "../../redux/cartSlice";
 const ProductDetails = ({ productId }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { selectedProduct, loading, error, similarProducts } = useSelector(
+  const { selectedProduct, loading, error, similarProduct } = useSelector(
     (state) => {
       return state.products;
     }
@@ -259,12 +259,12 @@ const ProductDetails = ({ productId }) => {
         </div>
 
         {/* Similar products */}
-        {similarProducts?.length > 0 ? (
+        {similarProduct?.length > 0 ? (
           <div className="mt-20">
             <h2 className="text-3xl text-center font-medium mb-4">
               You May Also Like
             </h2>
-            <ProductGrid products={similarProducts || []} />
+            <ProductGrid products={similarProduct} loading={loading} error={error} />
           </div>
         ) : (
           <p className="mt-20 text-center">No similar products found.</p>

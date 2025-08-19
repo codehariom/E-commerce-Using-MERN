@@ -75,11 +75,11 @@ export const fetchSimilarProducts = createAsyncThunk(
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/products/similar/${id}` // Fixed typo
       );
-      console.log("fetchSimilarProducts Response:", response.data); // Debug API response
+    //   console.log("fetchSimilarProducts Response:", response.data); // Debug API response
       return response.data;
     } catch (error) {
-      console.error("fetchSimilarProducts Error:", error);
-      return rejectWithValue(error.response?.data || "Failed to fetch similar products");
+    //   console.error("fetchSimilarProducts Error:", error);
+      return rejectWithValue(error.response.data);
     }
   }
 );
