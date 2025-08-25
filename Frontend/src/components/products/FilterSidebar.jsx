@@ -161,13 +161,12 @@ const handlePriceChange = (e)=>{
         {sizes.map((size) => (
           <div key={size} className="flex items-center mb-1">
             <input
-              type="checkbox"
-              name="size"
-              value={size}
-              onChange={handleFilterChange}
-              checked={filters.size.includes(size)}
-              className="mr-2 h-4 w-4 text-blue-500 border-black"
-            />
+  type="checkbox"
+  name="size"   
+  value={size}
+  onChange={handleFilterChange}
+  checked={filters.size.includes(size)} 
+/>
             <span className="text-gray-700">{size}</span>
           </div>
         ))}
