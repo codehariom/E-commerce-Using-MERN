@@ -186,7 +186,7 @@ export const allProduct = expressAsyncHandler(async (req, res) => {
             query.brand = { $in: brand.split(",") };
         }
         if (size) {
-            query.size = { $in: size.split(",") };
+            query.sizes = { $in: size.split(",") };
         }
         if (color) {
             query.color = { $in: [color] };
@@ -201,8 +201,8 @@ export const allProduct = expressAsyncHandler(async (req, res) => {
         }
         if (search) {
             query.$or = [
-                { name: { $regex: search, $option: "i" } },
-                { description: { $regex: search, $option: "i" } },
+                { name: { $regex: search, $options: "i" } },
+                { description: { $regex: search, $options: "i" } },
             ];
         }
 
