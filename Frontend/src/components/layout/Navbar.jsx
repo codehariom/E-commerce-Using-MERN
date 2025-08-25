@@ -6,10 +6,15 @@ import { HiMiniBars3BottomRight } from "react-icons/hi2";
 import SerachBar from "../common/SerachBar";
 import CartDrawer from "../layout/CartDrawer";
 import { IoMdClose } from "react-icons/io";
+import { useSelector } from "react-redux";
 
 function Navbar() {
   const [cartDrawer, setCartDrawer] = useState(false);
   const [navDrawer, setNavDrawer] = useState(false);
+  const {cart} = useSelector((state) => state.cart); 
+  const cartItemCount =
+    cart.products?.reduce((total, product) => total + product.quantity,0 );
+
 
   const toggelNavDrawer = () => {
     setNavDrawer(!navDrawer);
@@ -31,25 +36,25 @@ function Navbar() {
         {/* Menu  */}
         <div className=" hidden md:flex space-x-6">
           <Link
-            to="/collection/all?gender=man"
+            to="/collection/all?gender=Men"
             className="text-gray-700 hover:text-black text-sm font-semibold uppercase"
           >
             Man 
           </Link>
           <Link
-            to="/collection/all?gender=woman"
+            to="/collection/all?gender=Women"
             className="text-gray-700 hover:text-black text-sm font-semibold uppercase"
           >
             Woman 
           </Link>
           <Link
-            to="/collection/all?gender=top-wear"
+            to="/collection/all?category=Top Wear"
             className="text-gray-700 hover:text-black text-sm font-semibold uppercase"
           >
             Top wear
           </Link>
           <Link
-            to="/collection/all?gender=bottom-wear"
+            to="/collection/all?category=Bottom Wear"
             className="text-gray-700 hover:text-black text-sm font-semibold uppercase"
           >
             Bottom Wear
@@ -68,9 +73,10 @@ function Navbar() {
             className=" relative hover:text-black"
           >
             <FaCartShopping size={22} />
-            <span className=" absolute -top-3 -right-4.5 text-black text-sm my-1">
-              10
-            </span>
+            {cartItemCount >= 0 && ( <span className=" absolute -top-3 -right-4.5 text-black text-sm my-1">
+              {cartItemCount}
+            </span>)}
+           
           </button>
           {/* searchbar */}
           <div className=" overflow-hidden">
@@ -99,32 +105,32 @@ function Navbar() {
           <h2 className="text-xl font-semibold mb-4">Menu</h2>
           <nav className=" space-y-2">
             <Link
-              to="/collection/all?gender=man"
+              to="/collection/all?gender=Men"
               onClick={toggelNavDrawer}
               className="block text-gray-600 hover:text-black"
             >
               Men
             </Link>
             <Link
-              to="/collection/all?gender=woman"
+              to="/collection/all?gender=Women"
               onClick={toggelNavDrawer}
               className="block text-gray-600 hover:text-black"
             >
               Women
             </Link>
             <Link
-              to="/collection/all?gender=top-wear"
+              to="/collection/all?category=Top Wear"
               onClick={toggelNavDrawer}
               className="block text-gray-600 hover:text-black"
             >
-              Topwear
+              Top wear
             </Link>
             <Link
-              to="/collection/all?gender=bottom-wear"
+              to="/collection/all?category=Bottom Wear"
               onClick={toggelNavDrawer}
               className="block text-gray-600 hover:text-black"
             >
-              Bottomwear
+              Bottom wear
             </Link>
           </nav>
         </div>

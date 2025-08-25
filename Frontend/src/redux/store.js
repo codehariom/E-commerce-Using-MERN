@@ -8,11 +8,12 @@ import adminReducer from "./adminSlice.js"
 import adminProductsReducer from "./adminProductSlice.js"
 import adminOrderReducer from "./adminOrderSlice.js"
 
+
 export const store = configureStore({
   reducer: {
     auth:authReducer,
     products:productReducer,
-    carts:cartReducer,
+    cart:cartReducer,
     checkout:checkoutReducer,
     order:orderReducer,
     admin:adminReducer,

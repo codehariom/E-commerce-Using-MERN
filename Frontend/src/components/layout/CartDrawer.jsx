@@ -1,41 +1,57 @@
 import React from "react";
 import { IoMdClose } from "react-icons/io";
 import CartContent from "../cart/CartContent";
-import {useNavigate} from "react-router-dom"
-
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function CartDrawer({ cartDrawer, toggleCartDrawer }) {
-  const navigate  = useNavigate();
- const handelCheckout =()=>{
-      toggleCartDrawer()
-      navigate("/checkout")
- }   
+  const { user, guestId } = useSelector((state) => state.auth);
+  const { cart } = useSelector((state) => state.cart);
+  const userId = user ? user._id : null;
+
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    toggleCartDrawer();
+    navigate(user ? "/checkout" : "/login?redirect=checkout");
+  };
+
+  const hasItems = cart && cart?.products?.length > 0;
+
   return (
     <div
-      className={` fixed top-0 right-0 w-2/4 sm:w-1/2 md:w-[25rem] h-full bg-white shadow-lg transform transition-transform  duration-300 flex flex-col z-50 ${
+      className={`fixed top-0 right-0 z-50 flex h-full w-3/4 transform flex-col bg-white shadow-lg transition-transform duration-300 sm:w-1/2 md:w-[25rem] ${
         cartDrawer ? "translate-x-0" : "translate-x-full"
       }`}
-    > 
-      <div className=" flex p-4 justify-end ">
+    >
+      <div className="flex justify-end p-4">
         <button onClick={toggleCartDrawer}>
-          <IoMdClose size={30}  className=""/>
-        </button> 
-       
+          <IoMdClose size={30} className="text-gray-600 hover:text-gray-800" />
+        </button>
       </div>
-       {/* cart scrollable with scrollable area  */}
-        <div className=" flex-grow p-4 overflow-y-auto">
-          <h2 className=" text-xl font-semibold mb-4"> Your cart </h2>
-          <CartContent/>
-        </div>
-        {/* checkout button  */}
-        <div className=" sticky bottom-0 p-4 bg-white">
-          <button  onClick={handelCheckout} className=" w-full bg-orange-300 text-black py-3 rounded-xl font-semibold hover:bg-orange-600 hover:text-white transition">
-            Checkout
-          </button>
-          <p className=" text-sm tracking-tight text-gray-400 mt-2 text-center">
-            Shiping, Taxes and Distcount code Calculated at Checkout.
-          </p>
-        </div>
+      <div className="flex-grow overflow-y-auto p-4">
+        <h2 className="mb-4 text-xl font-semibold">Your Cart</h2> 
+        {hasItems ? (
+          <CartContent cart={cart} userId={userId} guestId={guestId} />
+        ) : (
+          <p className="text-center text-gray-500">Your cart is empty.</p>
+        )}
+      </div>
+      <div className="sticky bottom-0 bg-white p-4">
+        {hasItems && (
+          <>
+            <button
+              onClick={handleCheckout}
+              className="w-full rounded-xl bg-orange-300 py-3 font-semibold text-black transition hover:bg-orange-600 hover:text-white"
+            >
+              Checkout
+            </button>
+            <p className="mt-2 text-center text-sm tracking-tight text-gray-400">
+              Shipping, taxes, and discount codes calculated at checkout.
+            </p>
+          </>
+        )}
+      </div>
     </div>
   );
 }
