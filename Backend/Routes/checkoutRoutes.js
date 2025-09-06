@@ -14,7 +14,7 @@ router.post("/",authenticateUser,checkout)
 // @access Private
 router.put("/:id/pay",authenticateUser,checkoutPaid)
 
-// route post /api/checkout/:id/pay
+// route post /api/checkout/:id/finalize
 // @desc checkout and convert to an order after payment confirmation
 // @access Private
 router.post("/:id/finalize",authenticateUser,finalizeCheckout)

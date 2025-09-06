@@ -11,10 +11,11 @@ import { useDispatch, useSelector } from "react-redux"
 import axios from 'axios'
 import { fetchProductByFilter } from '../redux/productSlice'
 
+
 function Home() {
   const dispatch = useDispatch()
 
-  // ✅ Make sure this matches your productSlice structure
+  // Make sure this matches your productSlice structure
   const { products = [], loading, error } = useSelector((state) => state.products);
 
   const [bestSeller, setBestSeller] = useState(null)

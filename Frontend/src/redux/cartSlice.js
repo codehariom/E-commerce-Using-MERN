@@ -165,6 +165,7 @@ const cartSlice = createSlice({
       state.cart = { products: [], totalPrice: 0 };
       state.error = null;
       localStorage.removeItem("cart");
+      saveCartToStorage(state.cart);
     },
   },
   extraReducers: (builder) => {
@@ -177,7 +178,7 @@ const cartSlice = createSlice({
       .addCase(fetchCart.fulfilled, (state, action) => {
         state.loading = false;
         state.cart = action.payload;
-        saveCartToStorage(action.payload);
+        // saveCartToStorage(action.payload);
       })
       .addCase(fetchCart.rejected, (state, action) => {
         state.loading = false;
@@ -222,7 +223,8 @@ const cartSlice = createSlice({
       .addCase(removeFromCart.fulfilled, (state, action) => {
         state.loading = false;
         state.cart = action.payload;
-        saveCartToStorage(action.payload);
+        // saveCartToStorage(action.payload);
+        removeFromCart(action.payload);
       })
       .addCase(removeFromCart.rejected, (state, action) => {
         state.loading = false;

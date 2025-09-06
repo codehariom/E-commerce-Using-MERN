@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signUpUser } from "../redux/authSlice.js";
+import { mergeCart } from "../redux/cartSlice.js";
 
 function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,6 +12,29 @@ function Signup() {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const{user,guestId} = useSelector((state)=>state.auth)
+  const{cart}= useSelector((state)=> state.cart)
+ 
+
+
+  // get redirect parameter and check if its checkout or something 
+
+  const redirect = new URLSearchParams(location.search).get("redirect") || "/"
+  const isCheckout = redirect.includes("checkout");
+
+  useEffect(()=>{
+    if(user){
+      if(cart?.products.length>0 && guestId){
+        dispatch(mergeCart({guestId,user})).then(()=>{
+          navigate(isCheckout? "/checkout" : "/")
+        }) 
+      }
+      else{
+        navigate(isCheckout? "/checkout" : "/")
+      }
+    }
+  },[user,guestId,cart,navigate,isCheckout,dispatch   ])
 
   const formik = useFormik({
     initialValues: {
@@ -160,7 +184,7 @@ function Signup() {
           {/* Login Link */}
           <p className="mt-2 text-center">
             Already have an account?{" "}
-            <Link to="/login" className="text-blue-500">
+            <Link to={`/login?redirect=${encodeURIComponent(redirect)}`} className="text-blue-500">
               Sign-in
             </Link>
           </p>

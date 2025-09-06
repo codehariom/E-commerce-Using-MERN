@@ -1,5 +1,5 @@
 import expressAsyncHandler from "express-async-handler";
-import Cart from "../Models/cartModel.js";
+import {Cart} from "../Models/cartModel.js";
 
 export const getCart = expressAsyncHandler(async (userId, guestId) => {
     if (userId) {

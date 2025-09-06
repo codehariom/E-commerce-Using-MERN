@@ -1,10 +1,20 @@
 import React, { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { fetchProductByFilter, setFilters } from "../../redux/productSlice";
+
+
 
 function SerachBar() {
   const [serachTerm, setSearchTerm] = useState("");
   const [isopen, setIsOpen] = useState(false);
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  
 
   const handleSaerchToggle = () => {
     setIsOpen(!isopen);
@@ -13,6 +23,9 @@ function SerachBar() {
   const handleSearch = (e) => {
     e.preventDefault();
     //  console.log("Search item", serachTerm);
+    dispatch(setFilters({search:serachTerm}))
+    dispatch(fetchProductByFilter({search:serachTerm}))
+    navigate(`/collection/all?search=${serachTerm}`)
     setIsOpen(!isopen);
   };
 

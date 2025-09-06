@@ -1,5 +1,5 @@
 import expressAsyncHandler from "express-async-handler";
-import Cart from "../Models/cartModel.js";
+import {Cart }from "../Models/cartModel.js";
 import { Product } from "../Models/productModel.js";
 import { getCart } from "../Helper/guestId.js";
 
@@ -94,14 +94,14 @@ export const deleteCart = expressAsyncHandler(async (req, res) => {
 
   // Validate input
   if (!productId || !size || !color) {
-    console.log("deleteCart - Invalid input:", { productId, size, color, guestId, userId });
+    // console.log("deleteCart - Invalid input:", { productId, size, color, guestId, userId });
     return res.status(400).json({ message: "Product ID, size, and color are required" });
   }
 
   try {
     let cart = await getCart(userId, guestId);
     if (!cart) {
-      console.log("deleteCart - Cart not found:", { userId, guestId });
+      // console.log("deleteCart - Cart not found:", { userId, guestId });
       return res.status(404).json({ message: "Cart not found" });
     }
 
@@ -114,17 +114,17 @@ export const deleteCart = expressAsyncHandler(async (req, res) => {
       cart.totalPrice = cart.product.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
       await cart.save();
-      console.log("deleteCart - Updated cart:", { cart });
+      // console.log("deleteCart - Updated cart:", { cart });
       return res.status(200).json({
         products: cart.product,
         totalPrice: cart.totalPrice,
       });
     } else {
-      console.log("deleteCart - Product not in cart:", { productId, size, color });
+      // console.log("deleteCart - Product not in cart:", { productId, size, color });
       return res.status(404).json({ message: "Product not found in cart" });
     }
   } catch (error) {
-    console.error("deleteCart - Error:", { userId, guestId, error: error.message });
+    // console.error("deleteCart - Error:", { userId, guestId, error: error.message });
     return res.status(500).json({ message: `Server error: ${error.message}` });
   }
 });
@@ -142,7 +142,7 @@ export const getCartProduct = expressAsyncHandler(async (req, res) => {
 
   try {
     const cart = await getCart(userId, guestId);
-    // console.log("getCartProduct - Fetched cart:", { userId, guestId, cart });
+   
 
     // Return empty cart if none exists
     const response = {
@@ -175,8 +175,6 @@ export const mergeCart = expressAsyncHandler(async (req, res) => {
   try {
     const guestCart = await Cart.findOne({ guestId });
     const userCart = await Cart.findOne({ user: userId });
-
-    // console.log("mergeCart - Fetched carts:", { guestCart, userCart });
 
     if (guestCart) {
       if (guestCart.product.length === 0) {
@@ -256,20 +254,20 @@ export const updateCartItemQuantity = expressAsyncHandler(async (req, res) => {
 
   // Validate input
   if (!productId || !quantity || !size || !color) {
-    console.log("updateCartItemQuantity - Invalid input:", { productId, quantity, size, color, guestId, userId });
+    
     return res.status(400).json({ message: "Product ID, quantity, size, and color are required" });
   }
 
   const qty = Number(quantity);
   if (isNaN(qty) || qty <= 0) {
-    console.log("updateCartItemQuantity - Invalid quantity:", { quantity });
+    // console.log("updateCartItemQuantity - Invalid quantity:", { quantity });
     return res.status(400).json({ message: "Quantity must be a positive number" });
   }
 
   try {
     let cart = await getCart(userId, guestId);
     if (!cart) {
-      console.log("updateCartItemQuantity - Cart not found:", { userId, guestId });
+      // console.log("updateCartItemQuantity - Cart not found:", { userId, guestId });
       return res.status(404).json({ message: "Cart not found" });
     }
 
@@ -282,17 +280,18 @@ export const updateCartItemQuantity = expressAsyncHandler(async (req, res) => {
       cart.totalPrice = cart.product.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
       await cart.save();
-      console.log("updateCartItemQuantity - Updated cart:", { cart });
+      // console.log("updateCartItemQuantity - Updated cart:", { cart });
       return res.status(200).json({
         products: cart.product,
         totalPrice: cart.totalPrice,
       });
     } else {
-      console.log("updateCartItemQuantity - Product not in cart:", { productId, size, color });
+      // console.log("updateCartItemQuantity - Product not in cart:", { productId, size, color });
       return res.status(404).json({ message: "Product not found in cart" });
     }
   } catch (error) {
-    console.error("updateCartItemQuantity - Error:", { userId, guestId, error: error.message });
+    // console.error("updateCartItemQuantity - Error:", { userId, guestId, error: error.message });
     return res.status(500).json({ message: `Server error: ${error.message}` });
   }
 });
+

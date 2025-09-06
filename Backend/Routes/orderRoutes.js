@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticateUser } from "../Middlewares/validateToken.js";
-import { myOrder, orderDetails } from "../Controllers/orderControllers.js";
+import { createCODOrder, myOrder, orderDetails } from "../Controllers/orderControllers.js";
 const router = express.Router();
 
 // route get /api/order/my-order
@@ -12,5 +12,10 @@ router.get("/my-order",authenticateUser,myOrder)
 // @desc get orders by id
 // @access private
 router.get("/:id",authenticateUser,orderDetails)
+
+// route get /api/order/:id
+// @desc get orders by id
+// @access private
+router.get("/:id",authenticateUser,createCODOrder)
 
 export default router;

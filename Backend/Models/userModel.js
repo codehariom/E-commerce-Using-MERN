@@ -6,6 +6,7 @@ const userModel = new mongoose.Schema(
             type: String,
             require: true,
             trim: true,
+            uppercase:true
         },
         email: {
             type: String,

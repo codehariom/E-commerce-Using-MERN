@@ -86,7 +86,7 @@ const authSlice = createSlice({
       state.guestId = `guest_${Date.now()}`;
       state.error = null;
       localStorage.removeItem("userInfo");
-      localStorage.removeItem("userToken");
+      localStorage.removeItem("token");
       localStorage.setItem("guestId", state.guestId);
     },
     generateNewGuestId: (state) => {
@@ -104,7 +104,6 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
-        state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;

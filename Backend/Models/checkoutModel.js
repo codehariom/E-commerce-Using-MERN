@@ -11,7 +11,7 @@ const checkoutItemModel = new mongoose.Schema(
             type: String,
             required: true,
         },
-        image: {
+        images: {
             type: String,
             required: true,
         },
@@ -52,6 +52,10 @@ const checkoutModel = new mongoose.Schema(
                 type: String,
                 required: true,
             },
+            country: { 
+                type: String, 
+                required: false
+            },
         },
         paymentMethod: {
             type: String,
@@ -74,6 +78,9 @@ const checkoutModel = new mongoose.Schema(
         },
         paymentDetails: {
             type: mongoose.Schema.Types.Mixed,
+        },
+        paymentId: {
+            type: String,
         },
         isFinalized: {
             type: Boolean,

@@ -60,6 +60,9 @@ import subscriber from "../Backend/Routes/subscriberRoutes.js"
 import adminRoutes from "../Backend/Routes/adminRoutes.js"
 import adminProduct from "../Backend/Routes/productAdminRoutes.js"
 import adminOrder from "../Backend/Routes/adminOrderRoutes.js"
+import paymentRoute from "../Backend/Routes/paymentRoutes.js"
+
+
 
 // api Version Routes
 app.use("/api/user",userRoute)
@@ -72,4 +75,5 @@ app.use("/api/subscribe",subscriber)
 app.use("/api/admin",adminRoutes)
 app.use("/api/admin/product",adminProduct)
 app.use("/api/admin/order",adminOrder)
+app.use("/api/payment",paymentRoute)
 

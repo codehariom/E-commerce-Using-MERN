@@ -36,6 +36,7 @@ export const registerUser = expressAsyncHandler(async (req, res) => {
         user: {
             name: newUser.name,
             email: newUser.email,
+            role:newUser.role,
             password: newUser.password,
         },
     });
@@ -66,7 +67,7 @@ export const loginUser = expressAsyncHandler(async (req, res) => {
 
     // Generate JWT
     const token = jwt.sign(
-        { id: user._id, email: user.email },
+        { id: user._id, email: user.email  },
         process.env.Jwt_Secret,
         { expiresIn: process.env.Jwt_timeout || "24h" } // Fallback to 1 hour
     );
@@ -76,6 +77,7 @@ export const loginUser = expressAsyncHandler(async (req, res) => {
         user: {
             id: user._id,
             email: user.email,
+            role:user.role,
             name: user.name, // Include additional fields as needed
         },
         token,
