@@ -223,7 +223,7 @@ const cartSlice = createSlice({
       .addCase(removeFromCart.fulfilled, (state, action) => {
         state.loading = false;
         state.cart = action.payload;
-        // saveCartToStorage(action.payload);
+        saveCartToStorage(action.payload);
         removeFromCart(action.payload);
       })
       .addCase(removeFromCart.rejected, (state, action) => {

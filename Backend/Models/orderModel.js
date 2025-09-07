@@ -93,6 +93,8 @@ const orderModel = new mongoose.Schema({
         enum: ["Processing", "Shipped", "Delivered", "Cancelled"],
         default: "Processing",
     },
+},{
+    timestamps:true
 });
 
 export const Order = mongoose.model("Order", orderModel);

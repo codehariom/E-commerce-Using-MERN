@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Razorpay from "../payment/razorpay";
-import { createCheckout, resetCheckout } from "../../redux/checkoutSlice";
+import { createCheckout, resetCheckout} from "../../redux/checkoutSlice";
 import { clearCart } from "../../redux/cartSlice";
 
 function Checkout() {
@@ -126,16 +126,16 @@ const handleFinalizeCheckout = async (checkoutId) => {
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_BACKEND_URL}/api/checkout/${checkoutId}/finalize`,
-      {   },   
-      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }  
+      {},
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
     );
-    dispatch(clearCart());
-    dispatch(resetCheckout());
+
     if (response.status === 201) {
-      navigate("/order-confirmation");
-      return response.data;
-      
-    } else {
+  dispatch(clearCart());
+  dispatch(resetCheckout());
+  setCheckoutId(null);
+  navigate("/my-order", { state: { checkoutId } });
+} else {
       throw new Error("Order finalization failed");
     }
   } catch (error) {
@@ -154,10 +154,11 @@ const handleCODConfirmation = async () => {
   
   dispatch(clearCart());
   dispatch(resetCheckout());
-  navigate("/order-confirmation");
+  
   try {
     console.log("COD checkoutId:", checkoutId);
     await handleFinalizeCheckout(checkoutId, "COD");
+    navigate("/my-order");
    
      
   } catch (err) {

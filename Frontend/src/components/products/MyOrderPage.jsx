@@ -1,47 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { SlRefresh } from "react-icons/sl";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { fetchUserOrder } from "../../redux/orderSlice";
 
 function MyOrderPage() {
-  const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { orders, loading, error } = useSelector((state) => state.orders);
+
+  useEffect(() => {
+    dispatch(fetchUserOrder());
+  }, [dispatch]);
 
   const handleRowClick = (orderId) => {
     navigate(`/order/${orderId}`);
   };
 
   const handleRefresh = () => {
-    window.location.reload();
+    dispatch(fetchUserOrder()); // better than reloading
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      const demoOrders = [
-        {
-          id: "7310",
-          createdAt: new Date(),
-          shippingAddress: { city: "Hyderabad", country: "India" },
-          orderItem: [
-            { name: "T-shirt", image: "https://picsum.photos/200?random=1" },
-            { name: "T-shirt", image: "https://picsum.photos/200?random=3" },
-          ],
-          totalPrice: 250,
-          isPaid: true,
-        },
-        {
-          id: "6310",
-          createdAt: new Date(),
-          shippingAddress: { city: "Hyderabad", country: "India" },
-          orderItem: [
-            { name: "Shirt", image: "https://picsum.photos/200?random=2" },
-          ],
-          totalPrice: 150,
-          isPaid: false,
-        },
-      ];
-      setOrders(demoOrders);
-    }, 1000);
-  }, []);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error loading orders.</p>;
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6">
@@ -71,19 +53,19 @@ function MyOrderPage() {
             {orders.length > 0 ? (
               orders.map((order) => (
                 <tr
-                  key={order.id}
-                  onClick={() => handleRowClick(order.id)}
+                  key={order._id}
+                  onClick={() => handleRowClick(order._id)}
                   className="border-b hover:bg-gray-100 cursor-pointer"
                 >
                   <td className="py-2 px-2 sm:px-4">
                     <img
-                      src={order.orderItem[0]?.image}
+                      src={order.orderItem?.[0]?.images || ""}
                       alt="Order item"
                       className="w-10 h-10 object-cover rounded-lg"
                     />
                   </td>
                   <td className="py-2 px-2 sm:px-4 font-medium text-black">
-                    #{order.id}
+                    #{order._id}
                   </td>
                   <td className="py-2 px-2 sm:px-4">
                     {new Date(order.createdAt).toLocaleDateString()}{" "}
@@ -91,11 +73,11 @@ function MyOrderPage() {
                   </td>
                   <td className="py-2 px-2 sm:px-4">
                     {order.shippingAddress
-                      ? `${order.shippingAddress.city}, ${order.shippingAddress.country}`
+                      ? `${order.shippingAddress.address}, ${order.shippingAddress.city || ""}`
                       : "N/A"}
                   </td>
                   <td className="py-2 px-2 sm:px-4">
-                    {order.orderItem.length}
+                    {order.checkoutItem?.quantity || order.orderItem.reduce((acc, item) => acc + item.quantity, 0)}
                   </td>
                   <td className="py-2 px-2 sm:px-4">${order.totalPrice}</td>
                   <td className="py-2 px-2 sm:px-4">
@@ -124,4 +106,3 @@ function MyOrderPage() {
 }
 
 export default MyOrderPage;
-  

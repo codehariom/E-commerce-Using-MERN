@@ -16,20 +16,24 @@ export const myOrder = expressAsyncHandler(async (req, res) => {
 });
 
 export const orderDetails = expressAsyncHandler(async (req, res) => {
-    try {
-        const order = await Order.findById(req.params.id).populate(
-            "user",
-            "name email"
-        );
-        if (!order) {
-            return res.status(404).json({ message: "Order Is not found" });
-        }
-        res.status(200).json(order)
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Server Error" });
+  try {
+    if (!req.params.id) {
+      return res.status(400).json({ message: "Order ID is required" });
     }
+
+    const order = await Order.findById(req.params.id).populate("user", "name email");
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json(order);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
 });
+
 
 export const createCODOrder = expressAsyncHandler(async (req, res) => {
   const { checkoutId, totalPrice } = req.body;
