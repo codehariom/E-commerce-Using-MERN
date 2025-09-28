@@ -1,7 +1,7 @@
 import expressAsyncHandler from "express-async-handler";
 
 export const admin= expressAsyncHandler(async(req,res,next)=>{
-    if(req.user && req.user.role==="Admin"){
+    if(req.user && req.user.role==="admin"){
         next();
     }
     else{
