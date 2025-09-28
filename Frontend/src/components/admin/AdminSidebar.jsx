@@ -7,13 +7,18 @@ import {
   FaClipboardList,
   FaUser,
 } from "react-icons/fa6";
+import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import { logout } from "../../redux/authSlice";
+import { clearCart } from "../../redux/cartSlice";
 
 function AdminSidebar() {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const handleLogout = () => {
-    // Add logout/auth clearing logic here if needed
+    dispatch(logout())
+    dispatch(clearCart()) 
     navigate("/");
   };
 

@@ -1,23 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { addUser, deleteUser, updateUser, fetchUsers } from "../../redux/adminSlice";
 
 function UserManagement() {
-  const [users, setUsers] = useState([
-    {
-      _id: 123,
-      name: "Hariom",
-      email: "hariom@gmail.com",
-      role: "admin",
-    },
-  ]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { user } = useSelector((state) => state.auth);
+  const { users, loading, error } = useSelector((state) => state.admin);
 
   const [showPassword, setShowPassword] = useState(false);
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     role: "customer",
   });
+
+  const [successMessage, setSuccessMessage] = useState("");
+
+  useEffect(() => {
+    if (!user || user.role !== "admin") {
+      navigate("/");
+    } else {
+      dispatch(fetchUsers());
+    }
+  }, [user, navigate, dispatch]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -26,43 +35,51 @@ function UserManagement() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const newUser = {
-      _id: Date.now(), // simple unique ID
-      name: formData.name,
-      email: formData.email,
-      role: formData.role,
-    };
-
-    setUsers((prevUsers) => [...prevUsers, newUser]);
-
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-      role: "customer",
-    });
-  };
-
-  const handleDeleteUser = (userId) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
+    setSuccessMessage("");
+    try {
+      await dispatch(addUser(formData)).unwrap();
+      setSuccessMessage("User added successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        role: "customer",
+      });
+    } catch (err) {
+      console.log(err)
     }
   };
 
-  const handleRoleChange = (userId, newRole) => {
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user._id === userId ? { ...user, role: newRole } : user
-      )
-    );
+  const handleDeleteUser = async (userId) => {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      try {
+        await dispatch(deleteUser(userId)).unwrap();
+        setSuccessMessage("User deleted successfully!");
+      } catch (err) {
+       console.log(err)
+      }
+    }
+  };
+
+  const handleRoleChange = async (userId, newRole) => {
+    try {
+      await dispatch(updateUser({ id: userId, role: newRole })).unwrap();
+      setSuccessMessage("User role updated!");
+    } catch (err) {
+      console.log(err)
+    }
   };
 
   return (
     <div className="max-w-7xl mx-auto p-6">
       <h2 className="text-2xl font-semibold mb-4">User Management</h2>
+
+      {/* Messages */}
+      {loading && <p className="text-blue-500 mb-2">Loading...</p>}
+      {error && <p className="text-red-500 mb-2 font-medium">{error}</p>}
+      {successMessage && <p className="text-green-500 mb-2 font-medium">{successMessage}</p>}
 
       {/* Add New User Form */}
       <div className="bg-white p-6 rounded-lg shadow mb-6">
@@ -150,15 +167,15 @@ function UserManagement() {
           </thead>
           <tbody>
             {users.length > 0 ? (
-              users.map((user) => (
-                <tr key={user._id} className="border-b hover:bg-gray-50">
-                  <td className="p-4">{user.name}</td>
-                  <td className="p-4">{user.email}</td>
+              users.map((userItem) => (
+                <tr key={userItem._id || userItem.id} className="border-b hover:bg-gray-50">
+                  <td className="p-4">{userItem.name}</td>
+                  <td className="p-4">{userItem.email}</td>
                   <td className="p-4">
                     <select
-                      value={user.role}
+                      value={userItem.role}
                       onChange={(e) =>
-                        handleRoleChange(user._id, e.target.value)
+                        handleRoleChange(userItem._id, e.target.value)
                       }
                       className="p-2 border rounded"
                     >
@@ -168,7 +185,7 @@ function UserManagement() {
                   </td>
                   <td className="p-4">
                     <button
-                      onClick={() => handleDeleteUser(user._id)}
+                      onClick={() => handleDeleteUser(userItem._id)}
                       className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                     >
                       Delete
