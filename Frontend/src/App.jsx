@@ -13,15 +13,17 @@ import Checkout from "./components/cart/Checkout";
 import OrderDetails from "./Page/OrderDetails";
 import MyOrderPage from "./components/products/MyOrderPage";
 import AdminLayout from "./components/admin/AdminLayout";
-import AdminHomaPage from "./Page/AdminHomaPage";
+
 import UserManagement from "./components/admin/UserManagement";
 import ProductManagement from "./components/admin/ProductManagement";
 import OrderManagement from "./components/admin/OrderManagement";
 import EditProductPage from "./components/admin/EditProductPage";
 import NewProductPage from "./components/admin/NewProductPage";
-
+import PrivateRoute from "./routes/privateRoutes.jsx";
+import AdminHomePage from "./Page/AdminHomePage.jsx";
 import {Provider} from "react-redux"
 import {store} from "./redux/store.js";
+
 
 
 function App() {
@@ -43,8 +45,8 @@ function App() {
           <Route path="order/:id" element={<OrderDetails/>}/>
         </Route>
         {/*Admin Layout*/}
-        <Route path="/admin" element={<AdminLayout/>}>
-          <Route index element={<AdminHomaPage/>}/>
+        <Route path="/admin" element={<PrivateRoute role="admin"><AdminLayout/></PrivateRoute>}>
+          <Route index element={<AdminHomePage/>}/>
           <Route path="users" element={<UserManagement/>}/>
           <Route path="products" element={<ProductManagement/>}/>
           <Route path="orders" element={<OrderManagement/>}/>

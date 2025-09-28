@@ -12,6 +12,7 @@ function Navbar() {
   const [cartDrawer, setCartDrawer] = useState(false);
   const [navDrawer, setNavDrawer] = useState(false);
   const {cart} = useSelector((state) => state.cart); 
+  const {user} = useSelector((state) => state.auth);
   const cartItemCount =
     cart.products?.reduce((total, product) => total + product.quantity,0 );
 
@@ -62,9 +63,10 @@ function Navbar() {
         </div>
         {/* CTA Button  */}
         <div className=" flex items-center space-x-7">
-           <Link to="/admin">
+          {user && user.role==="admin" && ( <Link to="/admin">
             <p className="text-white hover:text-black bg-orange-500 py-1 px-4 rounded ">Admin</p>
-          </Link>
+          </Link>)}
+           
           <Link to="/profile" className="text-gray-700 hover:text-black ">
             <FaUser size={20} />
           </Link>

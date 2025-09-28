@@ -1,134 +1,127 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// fetch all orders
+
+// Fetch all orders
 export const fetchAllOrders = createAsyncThunk(
-    "adminOrder/fetchAllOrders",
-    async (_, { rejectWithValue }) => {
-        try {
-            const response = await axios.get(
-                `${import.meta.env.VITE_BACKEND_URL}api/admin/orders`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                }
-            );
-            return response.data;
-        } catch (error) {
-            console.error(error);
-            return rejectWithValue(error.response.data);
-        }
+  "adminOrders/fetchAll",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/order`,
+        { withCredentials: true }
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
     }
+  }
 );
 
-// update all orders delevery
+// Update order status
 export const updateOrderStatus = createAsyncThunk(
-    "adminOrder/updateOrderStatus",
-    async ({ id, status }, { rejectWithValue }) => {
-        try {
-            const response = await axios.put(
-                `${import.meta.env.VITE_BACKEND_URL}api/admin/orders/${id}`,
-                { status },
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                }
-            );
-            return response.data;
-        } catch (error) {
-            console.error(error);
-            return rejectWithValue(error.response.data);
-        }
+  "adminOrders/updateStatus",
+  async ({ id, status }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/order/${id}`,
+        { status },
+        { withCredentials: true }
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
     }
+  }
 );
 
-//deleting orders
-export const deleteOrders = createAsyncThunk(
-    "adminOrder/deleteOrders",
-    async (id, { rejectWithValue }) => {
-        try {
-            await axios.delete(
-                `${import.meta.env.VITE_BACKEND_URL}api/admin/orders/${id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                }
-            );
-            return id;
-        } catch (error) {
-            console.error(error);
-            return rejectWithValue(error.response.data);
-        }
+// Delete an order
+export const deleteOrder = createAsyncThunk(
+  "adminOrders/delete",
+  async (id, { rejectWithValue }) => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/order/${id}`,
+        { withCredentials: true }
+      );
+      return id; // return the deleted id
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
     }
+  }
 );
 
-// admin order slice
-
+// Slice
 const adminOrderSlice = createSlice({
-    name: "adminOrders",
-    initialState: {
-        orders: [],
-        totalOrders: 0,
-        totalSales: 0,
-        loading: false,
-        error: null,
-    },
-    reducers: {},
-    extraReducers: (builder) => {
-        builder
-            //fetch all orders
-            .addCase(fetchAllOrders.pending, (state) => {
-                ((state.loading = true), (state.error = null));
-            })
-            .addCase(fetchAllOrders.fulfilled, (state, actions) => {
-                ((state.loading = false), (state.orders = actions.payload));
-                state.totalOrders = actions.payload.length;
-                // calculate total sales
-                const totalSales = actions.payload.reduce((acc, order) => {
-                    return acc + order.totalPrice;
-                }, 0);
-                state.totalSales = totalSales;
-            })
-            .addCase(fetchAllOrders.rejected, (state, actions) => {
-                state.loading = false;
-                state.error = actions.payload.message;
-            })
+  name: "adminOrders",
+  initialState: {
+    orders: [],
+    totalOrders: 0,
+    totalSales: 0,
+    loading: false,
+    error: null,
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    // FETCH
+    builder
+      .addCase(fetchAllOrders.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllOrders.fulfilled, (state, action) => {
+        state.loading = false;
+        state.orders = action.payload || [];
+        state.totalOrders = state.orders.tot;
+        state.totalSales = state.orders.reduce(
+          (sum, order) => sum + (order.totalPrice || 0),
+          0
+        );
+      })
+      .addCase(fetchAllOrders.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch orders";
+      });
 
-            // update order status
-            .addCase(updateOrderStatus.pending, (state) => {
-                ((state.loading = true), (state.error = null));
-            })
-            .addCase(updateOrderStatus.fulfilled, (state, actions) => {
-                const updatedOrders = actions.payload;
-                const orderIndex = state.orders.findIndex(
-                    (order) => order._id === updatedOrders._id
-                );
-                if (orderIndex !== -1) {
-                    state.orders[orderIndex] = updatedOrders;
-                }
-            })
-            .addCase(updateOrderStatus.rejected, (state, actions) => {
-                state.loading = false;
-                state.error = actions.payload.message;
-            })
+    // UPDATE
+    builder
+      .addCase(updateOrderStatus.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateOrderStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        const updatedOrder = action.payload;
+        state.orders = state.orders.map((order) =>
+          order._id === updatedOrder._id ? updatedOrder : order
+        );
+      })
+      .addCase(updateOrderStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to update order";
+      });
 
-            //delete orders
-            .addCase(deleteOrders.pending, (state) => {
-                ((state.loading = true), (state.error = null));
-            })
-            .addCase(deleteOrders.fulfilled, (state, actions) => {
-                state.orders = state.orders.filter(
-                    (order) => order._id !== actions.payload
-                );
-            })
-            .addCase(deleteOrders.rejected, (state, actions) => {
-                state.loading = false;
-                state.error = actions.payload.message;
-            });
-    },
+    //  DELETE 
+    builder
+      .addCase(deleteOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteOrder.fulfilled, (state, action) => {
+        state.loading = false;
+        const id = action.payload;
+        state.orders = state.orders.filter((order) => order._id !== id);
+        state.totalOrders = state.orders.length;
+        state.totalSales = state.orders.reduce(
+          (sum, order) => sum + (order.totalPrice || 0),
+          0
+        );
+      })
+      .addCase(deleteOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to delete order";
+      });
+  },
 });
 
 export default adminOrderSlice.reducer;
