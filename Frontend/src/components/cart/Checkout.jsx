@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import Razorpay from "../payment/Razorpay";
+import Razorpay from "../payment/Razorpay.jsx";
 import { createCheckout, resetCheckout} from "../../redux/checkoutSlice";
 import { clearCart } from "../../redux/cartSlice";
 
