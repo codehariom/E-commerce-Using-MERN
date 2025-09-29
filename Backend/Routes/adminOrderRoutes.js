@@ -15,7 +15,7 @@ router.get("/",authenticateUser ,admin, allOrders )
 // route put /api/admin/order/:id
 // @desc  update Order Status  (admin only )
 // @access private
-router.get("/:id",authenticateUser ,admin, orderUpdate )
+router.put("/:id",authenticateUser ,admin, orderUpdate )
 
 // route delete /api/admin/order/:id
 // @desc  delete Order details  (admin only )

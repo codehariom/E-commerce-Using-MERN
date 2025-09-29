@@ -21,9 +21,7 @@ function AdminHomePage() {
   });
 
   useEffect(() => {
-    dispatch(fetchAdminProducts()).then((res) => {
-    console.log("Fetched products:", res.payload);
-  });
+    dispatch(fetchAdminProducts())
     dispatch(fetchAllOrders());
   }, [dispatch]);
 

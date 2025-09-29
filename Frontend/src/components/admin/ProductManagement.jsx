@@ -1,29 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { deleteAdminProducts, fetchAdminProducts } from "../../redux/adminProductSlice";
 
 function ProductManagement() {
-  const [products, setProducts] = useState([
-    {
-      _id: 1234,
-      name: "T-Shirt",
-      price: 23,
-      sku: "SKU12345",
-    },
-  ]);
+  const dispatch = useDispatch(); // fixed typo
+  const { products, loading, error } = useSelector((state) => state.adminProducts);
+
+  useEffect(() => {
+    dispatch(fetchAdminProducts());
+  }, [dispatch]);
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
-      setProducts((prevProducts) => prevProducts.filter((p) => p._id !== id));
-      console.log("Deleted product ID:", id);
+      dispatch(deleteAdminProducts({ id })); // pass correct product id
     }
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error... {error}</p>;
 
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="grid gap-5 sm:flex justify-between items-center mb-6">
         <h2 className="text-2xl font-semibold">Product Management</h2>
         <Link
-          to="/admin/products/new"
+          to="/admin/new/product"
           className="bg-green-600 text-sm text-white px-4 py-2 rounded hover:bg-green-500"
         >
           + Create New Product
@@ -47,9 +49,7 @@ function ProductManagement() {
                   key={product._id}
                   className="border-b hover:bg-gray-50 transition"
                 >
-                  <td className="p-4 whitespace-nowrap font-medium">
-                    {product.name}
-                  </td>
+                  <td className="p-4 whitespace-nowrap font-medium">{product.name}</td>
                   <td className="p-4 whitespace-nowrap">${product.price}</td>
                   <td className="p-4 whitespace-nowrap">{product.sku}</td>
                   <td className="p-4 whitespace-nowrap flex gap-4">
@@ -60,7 +60,7 @@ function ProductManagement() {
                       Edit
                     </Link>
                     <button
-                      onClick={() => handleDelete(product._id)}
+                      onClick={() => handleDelete(product._id)} // pass correct id
                       className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                     >
                       Delete

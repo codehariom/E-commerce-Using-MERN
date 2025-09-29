@@ -1,6 +1,6 @@
 import express from "express"
 import { authenticateUser } from "../Middlewares/validateToken.js"
-import { allProduct, bestSeller, deleteProduct, newArrivals, newProduct, similarProduct, singleProduct, updateProduct } from "../Controllers/productController.js"
+import { allProduct, bestSeller, newArrivals, newProduct, deleteProduct, similarProduct, singleProduct, updateProduct } from "../Controllers/productController.js"
 import { admin } from "../Middlewares/adminAuth.js"
 
 const router = express.Router()
@@ -13,12 +13,12 @@ router.post("/new",authenticateUser,admin,newProduct)
 // route put /api/product/update
 // @desc update the product 
 // @access admin
-router.put("/update/:id",authenticateUser,admin,updateProduct)
+router.put("/:id",authenticateUser,admin,updateProduct)
 
 // route put /api/product/delete
 // @desc delete the product 
 // @access admin
-router.delete("/delete/:id",authenticateUser,admin,deleteProduct)
+router.delete("/:id",authenticateUser,admin,deleteProduct)
 
 // route get /api/product/
 // @desc get all the product with optional query 

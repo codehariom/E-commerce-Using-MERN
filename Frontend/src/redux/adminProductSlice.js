@@ -1,140 +1,210 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-//async thunk to fetch admin products
+// Fetch admin products
 export const fetchAdminProducts = createAsyncThunk(
-    "adminProducts/fetchProducts",
-    async () => {
-        const response = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/api/admin/product`,
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-                },
-            }
-        );
-        return response.data;
+  "adminProducts/fetchProducts",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/product`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
     }
+  }
 );
 
-//  async to create the a new products
+export const fetchProductDetails = createAsyncThunk(
+  "adminProducts/fetchProductDetails",
+  async (id, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/product/${id}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("userToken")}` },
+        }
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+// Create product
 export const createAdminProducts = createAsyncThunk(
-    "adminProducts/createProduct",
-    async (productData) => {
-        const response = await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}/api/admin/product`,
-            productData,
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-                },
-            }
-        );
-        return response.data;
+  "adminProducts/createProduct",
+  async (productData, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+      for (const key in productData) {
+        if (key === "images") {
+          productData.images.forEach((image,) => {
+            formData.append("images", image); // Assuming images are File objects
+          });
+        } else if (Array.isArray(productData[key])) {
+          formData.append(key, JSON.stringify(productData[key]));
+        } else {
+          formData.append(key, productData[key]);
+        }
+      }
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/product/new`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Create Product Error:", error.response?.data || error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
+  }
 );
 
-// async thunk to update an existing product
+// Update product
 export const updateAdminProducts = createAsyncThunk(
-    "adminProducts/updateProduct",
-    async ({ id, productData }) => {
-        const response = await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}/api/admin/product/${id}`,
-            productData,
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-                },
-            }
-        );
-        return response.data;
+  "adminProducts/updateProduct",
+  async ({ id, productData }, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+      for (const key in productData) {
+        if (key === "images") {
+          productData.images.forEach((image) => {
+            formData.append("images", image);
+          });
+        } else if (Array.isArray(productData[key])) {
+          formData.append(key, JSON.stringify(productData[key]));
+        } else {
+          formData.append(key, productData[key]);
+        }
+      }
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/product/${id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
     }
+  }
 );
 
-// async thunk for delete product
+// Delete product
 export const deleteAdminProducts = createAsyncThunk(
-    "adminProducts/deleteProduct",
-    async ({ id }) => {
-        const response = await axios.delete(
-            `${import.meta.env.VITE_BACKEND_URL}/api/admin/product/${id}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-                },
-            }
-        );
-        return response.data;
+  "adminProducts/deleteProduct",
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("userToken")}` },
+      });
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
     }
+  }
 );
 
-// admin product slice
-
+// Slice
 const adminProductSlice = createSlice({
-    name: "adminProducts",
-    initialState: {
-        products: [],
-        loading: false,
-        error: null,
-    },
-    reducers: {},
-    extraReducers: (builder) => {
-        builder
+  name: "adminProducts",
+  initialState: {
+    products: [],
+    selectedProduct: null,
+    loading: false,
+    error: null,
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      // FETCH
+      .addCase(fetchAdminProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAdminProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload.products || action.payload || [];
+      })
+      .addCase(fetchAdminProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch products";
+      })
 
-            // fetch admin product
-            .addCase(fetchAdminProducts.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(fetchAdminProducts.fulfilled, (state, actions) => {
-                state.loading = false, 
-                state.products = actions.payload.products;
-            })
-            .addCase(fetchAdminProducts.rejected, (state, actions) => [
-                (state.loading = false),
-                (state.error = actions.error.message),
-            ])
+      // FETCH DETAILS
+      .addCase(fetchProductDetails.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedProduct = action.payload;
+      })
+      .addCase(fetchProductDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch product details";
+      })
 
-            // create admin product
-            .addCase(createAdminProducts.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(createAdminProducts.fulfilled, (state, actions) => {
-                ((state.loading = false), state.products.push(actions.payload));
-            })
-            .addCase(createAdminProducts.rejected, (state, actions) => [
-                (state.loading = false),
-                (state.error = actions.error.message),
-            ])
+      // CREATE
+      .addCase(createAdminProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createAdminProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products.push(action.payload);
+      })
+      .addCase(createAdminProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to create product";
+      })
 
-            // update admin product
-            .addCase(updateAdminProducts.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(updateAdminProducts.fulfilled, (state, actions) => {
-                const index = state.products.findIndex(
-                    (product) => product._id === actions.payload._id
-                );
-                if (index !== -1) {
-                    state.products[index] = actions.payload;
-                }
-            })
-            .addCase(updateAdminProducts.rejected, (state, actions) => [
-                (state.loading = false),
-                (state.error = actions.error.message),
-            ])
-            // delete admin product
-            .addCase(deleteAdminProducts.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(deleteAdminProducts.fulfilled, (state, actions) => {
-                state.products = state.products.filter(
-                    (product) => product._id !== actions.payload
-                );
-            })
-            .addCase(deleteAdminProducts.rejected, (state, actions) => [
-                (state.loading = false),
-                (state.error = actions.error.message),
-            ]);
-    },
+      // UPDATE
+      .addCase(updateAdminProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateAdminProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.products.findIndex((p) => p._id === action.payload._id);
+        if (index !== -1) state.products[index] = action.payload;
+      })
+      .addCase(updateAdminProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to update product";
+      })
+
+      // DELETE
+      .addCase(deleteAdminProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteAdminProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = state.products.filter((p) => p._id !== action.payload);
+      })
+      .addCase(deleteAdminProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to delete product";
+      });
+  },
 });
 
 export default adminProductSlice.reducer;

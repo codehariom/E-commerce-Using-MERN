@@ -8,21 +8,15 @@ export const newProduct = expressAsyncHandler(async (req, res) => {
             name,
             description,
             price,
-            discountPrice,
             countInStock,
             category,
             brand,
             sizes,
-            productCollection,
             colors,
             images,
             material,
             gender,
-            isFeatured,
             isPublished,
-            tags,
-            dimensions,
-            weight,
             sku,
         } = req.body;
 
@@ -30,21 +24,15 @@ export const newProduct = expressAsyncHandler(async (req, res) => {
             name,
             description,
             price,
-            discountPrice,
             countInStock,
             category,
             brand,
             sizes,
-            productCollection,
-            images,
             colors,
+            images,
             material,
             gender,
-            isFeatured,
             isPublished,
-            tags,
-            dimensions,
-            weight,
             sku,
             user: req.user._id, // ref to the admin user id
         });
@@ -69,10 +57,6 @@ export const newProduct = expressAsyncHandler(async (req, res) => {
                 return res.status(500).send({ error: "Size is Required" });
             case !colors:
                 return res.status(500).send({ error: "Color is Required" });
-            case !productCollection:
-                return res
-                    .status(500)
-                    .send({ error: "Collection is Required" });
             case !gender:
                 return res.status(500).send({ error: "Gender is Required" });
             case !images:

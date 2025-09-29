@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-
 // Fetch all orders
 export const fetchAllOrders = createAsyncThunk(
   "adminOrders/fetchAll",
@@ -28,7 +27,7 @@ export const updateOrderStatus = createAsyncThunk(
         { status },
         { withCredentials: true }
       );
-      return data;
+      return data; // updated order object from backend
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -44,14 +43,13 @@ export const deleteOrder = createAsyncThunk(
         `${import.meta.env.VITE_BACKEND_URL}/api/admin/order/${id}`,
         { withCredentials: true }
       );
-      return id; // return the deleted id
+      return id; // return deleted order id
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
-// Slice
 const adminOrderSlice = createSlice({
   name: "adminOrders",
   initialState: {
@@ -63,7 +61,7 @@ const adminOrderSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    // FETCH
+    // FETCH ALL
     builder
       .addCase(fetchAllOrders.pending, (state) => {
         state.loading = true;
@@ -71,8 +69,9 @@ const adminOrderSlice = createSlice({
       })
       .addCase(fetchAllOrders.fulfilled, (state, action) => {
         state.loading = false;
-        state.orders = action.payload || [];
-        state.totalOrders = state.orders.tot;
+        // Handle both {orders: []} and [] response
+        state.orders = action.payload.orders || action.payload || [];
+        state.totalOrders = state.orders.length;
         state.totalSales = state.orders.reduce(
           (sum, order) => sum + (order.totalPrice || 0),
           0
@@ -83,7 +82,7 @@ const adminOrderSlice = createSlice({
         state.error = action.payload || "Failed to fetch orders";
       });
 
-    // UPDATE
+    // UPDATE STATUS
     builder
       .addCase(updateOrderStatus.pending, (state) => {
         state.loading = true;
@@ -92,16 +91,17 @@ const adminOrderSlice = createSlice({
       .addCase(updateOrderStatus.fulfilled, (state, action) => {
         state.loading = false;
         const updatedOrder = action.payload;
-        state.orders = state.orders.map((order) =>
-          order._id === updatedOrder._id ? updatedOrder : order
-        );
+        const index = state.orders.findIndex((o) => o._id === updatedOrder._id);
+        if (index !== -1) {
+          state.orders[index] = updatedOrder; // update order locally
+        }
       })
       .addCase(updateOrderStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to update order";
       });
 
-    //  DELETE 
+    // DELETE ORDER
     builder
       .addCase(deleteOrder.pending, (state) => {
         state.loading = true;
