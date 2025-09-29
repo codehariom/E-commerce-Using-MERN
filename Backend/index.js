@@ -15,7 +15,7 @@ dotenv.config();
 const allowedOrigins = [
   'http://localhost:5173',
   // live server url
-  // 'https://clickurl-r72u.onrender.com'
+  "https://e-commerce-using-mern-vygc.onrender.com"
 ]; 
 
 app.use(cors({
