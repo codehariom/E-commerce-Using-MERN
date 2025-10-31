@@ -18,7 +18,7 @@ function Hero() {
             Explore our Vaction Ready Outfits with fast wolrdwide shiping{" "}
           </p>
           <Link
-            to="http://localhost:5173/collection/all"
+            to="https://e-commerce-using-mern-vygc.onrender.com/collection/all"
             className="bg-orange-600 text-white px-6  py-2 rounded-lg text-lg">
             Shop Now
           </Link>
